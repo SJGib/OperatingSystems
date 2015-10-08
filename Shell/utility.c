@@ -21,7 +21,7 @@ void cmd_prompt(void){
 }
 
 void print(char *content){
-	
+	printf("%s", &content);
 
 	free(content);
 }
