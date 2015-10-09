@@ -18,7 +18,7 @@ extern void print(char *content);
 
 // change directory
 // in: new directory
-extern void cmd_cd();
+extern void cmd_cd(char *directory);
 
 // clear shell
 // no input/output

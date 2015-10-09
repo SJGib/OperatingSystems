@@ -16,18 +16,18 @@
 // Define your utility functions here, these will most likely be functions that you call
 // in your myshell.c source file
 
-void cmd_prompt(void){
-	
-}
-
 void print(char *content){
 	printf("%s", &content);
 
 	free(content);
 }
 
-void cmd_cd(){
-	
+void cmd_cd(char *directory){
+	int success;
+	success = chdir(directory);
+	if(!success){
+		printf("Error: $s not found", directory);
+	}
 }
 
 void cmd_clr(void){
