@@ -65,7 +65,7 @@ char* cmd_help(void){
 }
 
 void cmd_pause(void){
-	
+	getchar();
 }
 
 void cmd_quit(void){
