@@ -31,7 +31,7 @@ void cmd_cd(char *directory){
 }
 
 void cmd_clr(void){
-	
+	printf("\033[H\033[J"); //clears the screen
 }
 
 char* cmd_dir(){

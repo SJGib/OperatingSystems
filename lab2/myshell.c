@@ -34,12 +34,14 @@ int main(int argc, char *argv[])
     while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
     {
         // Perform string tokenization to get the command and argument                  //JACK
-
+        for(int i=0; i<6; i++){
+            printf("test",i);
+        }
         // Check the command and execute the operations for each command
         if (strcmp(command, "cd") == 0){// cd command -- change the current directory   //JACK
             // your code here
-        } else if(strcmp(command, "clr") == 0){                                         //DENNIS
-
+        } else if(strcmp(command, "clr") == 0){   
+            cmd_clr();                                                             //DENNIS
         } else if(strcmp(command, "dir") == 0){                                         //AKIRA
 
         } else if(strcmp(command, "environ") == 0){                                     //AKIRA
@@ -49,7 +51,7 @@ int main(int argc, char *argv[])
         } else if(strcmp(command, "help") == 0){                                        //TRUYEN
 
         } else if(strcmp(command, "pause") == 0){                                       //DENNIS
-
+            void cmd_pause();
         } else if (strcmp(command, "quit") == 0){// quit command -- exit the shell
             return EXIT_SUCCESS;
         } else{// Unsupported command
