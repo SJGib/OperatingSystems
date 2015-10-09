@@ -34,7 +34,7 @@ void cmd_clr(void){
 	printf("\033[H\033[J"); //clears the screen
 }
 
-char* cmd_dir(){
+void cmd_dir(){
 
 	// Makes a directory pointer which points to the current directory
 	DIR *dir = opendir(".");
@@ -54,7 +54,7 @@ char* cmd_dir(){
     }
 }
 
-char* cmd_environ(void){		
+void cmd_environ(void){		
 	
 	// Points to an array of char* (an array of strings) which points to an array of characters (string)
 	// Each string is an environment variable for the current process
@@ -72,16 +72,16 @@ char* cmd_environ(void){
     }
 }
 
-char* cmd_echo(){
+void cmd_echo(){
 	
 }
 
-char* cmd_help(void){
+void cmd_help(void){
 	
 }
 
 void cmd_pause(void){
-	
+	getchar();
 }
 
 void cmd_quit(void){
