@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
 
     // Parse the commands provided using argc and argv
 
+
     // Perform an infinite loop getting command input from users
     while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
     {
@@ -40,11 +41,11 @@ int main(int argc, char *argv[])
         if (strcmp(command, "cd") == 0){// cd command -- change the current directory   //JACK
             // your code here
         } else if(strcmp(command, "clr") == 0){   
-            cmd_clr();                                                             //DENNIS
+            cmd_clr();                                                                  //DENNIS
         } else if(strcmp(command, "dir") == 0){                                         //AKIRA
 
         } else if(strcmp(command, "environ") == 0){                                     //AKIRA
-
+            cmd_environ();
         } else if(strcmp(command, "echo") == 0){                                        //TRUYEN
 
         } else if(strcmp(command, "help") == 0){                                        //TRUYEN
