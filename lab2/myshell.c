@@ -13,6 +13,7 @@
 #include <string.h>
 #include "utility.h"
 #include "myshell.h"
+ 
 
 // Put macros or constants here using #define
 #define BUFFER_LEN 256
@@ -35,6 +36,8 @@ int main(int argc, char *argv[])
     {
         // Perform string tokenization to get the command and argument                  //JACK
 
+
+        cmd_environ();
         // Check the command and execute the operations for each command
         if (strcmp(command, "cd") == 0){// cd command -- change the current directory   //JACK
             // your code here
