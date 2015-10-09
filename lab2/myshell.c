@@ -14,7 +14,6 @@
 #include "utility.h"
 #include "myshell.h"
 
-
 // Put macros or constants here using #define
 #define BUFFER_LEN 256
 
@@ -36,10 +35,15 @@ int main(int argc, char *argv[])
     while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
     {
         // Perform string tokenization to get the command and argument                  //JACK
-        strncpy(buffer, strtok(buffer, "\n"), BUFFER_LEN);
-        strncpy(command, strtok(buffer, " "), BUFFER_LEN);
-        for(char *tokens=strtok(NULL, " "; tokens; tokens=strtok(NULL, " "))){
-            strncpy(arg, strtok(NULL, "\n"), BUFFER_LEN);
+        char *newLine = strstr(buffer, "\n");
+        *newLine = 0;
+
+        char *tokens = strtok(buffer, " ");
+        strncpy(command, tokens, BUFFER_LEN);
+        tokens="";
+        while(tokens!=NULL){
+            strncpy(arg, tokens, BUFFER_LEN);
+            tokens = strtok(NULL, " ");
         }
         
         // Check the command and execute the operations for each command

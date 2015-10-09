@@ -17,16 +17,16 @@
 // in your myshell.c source file
 
 void print(char *content){
-	printf("%s", &content);
+	printf("%s", &content);// print content to screen
 
-	free(content);
+	free(content);// free the memory at location content
 }
 
 void cmd_cd(char *directory){
 	int success;
-	success = chdir(directory);
+	success = chdir(directory);// chang directory, returns 0 for success, otherwise error
 	if(success!=0){
-		printf("Error: %s not found", directory);
+		printf("Error: %s not found\n", directory);// print if error
 	}
 }
 
