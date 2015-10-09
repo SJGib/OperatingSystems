@@ -36,11 +36,11 @@ int main(int argc, char *argv[])
     while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
     {
         // Perform string tokenization to get the command and argument                  //JACK
-        strncpy(buffer, strtok(buffer, "\n"), BUFFER_LEN);
-        strncpy(command, strtok(buffer, " "), BUFFER_LEN);
-        for(char *tokens=strtok(NULL, " "; tokens; tokens=strtok(NULL, " "))){
-            strncpy(arg, strtok(NULL, "\n"), BUFFER_LEN);
-        }
+        // strncpy(buffer, strtok(buffer, "\n"), BUFFER_LEN);
+        // strncpy(command, strtok(buffer, " "), BUFFER_LEN);
+        // for(char *tokens=strtok(NULL, " "; tokens; tokens=strtok(NULL, " "))){
+        //     strncpy(arg, strtok(NULL, "\n"), BUFFER_LEN);
+        // }
         
         // Check the command and execute the operations for each command
         if (strcmp(command, "cd") == 0){// cd command -- change the current directory   //JACK
