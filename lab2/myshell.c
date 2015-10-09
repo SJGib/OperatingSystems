@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
         } else if(strcmp(command, "clr") == 0){   
             cmd_clr();                                                                  //DENNIS
         } else if(strcmp(command, "dir") == 0){                                         //AKIRA
-
+            cmd_dir();
         } else if(strcmp(command, "environ") == 0){                                     //AKIRA
             cmd_environ();
         } else if(strcmp(command, "echo") == 0){                                        //TRUYEN
