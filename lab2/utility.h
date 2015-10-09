@@ -37,7 +37,7 @@ extern void cmd_environ(void);
 // display comment
 // in: comment to be displayed
 // out: comment to be displayed
-extern void cmd_echo();
+extern void cmd_echo(char *comment);
 
 // display user manual
 // out: user manual

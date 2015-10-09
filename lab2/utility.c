@@ -72,12 +72,26 @@ void cmd_environ(void){
     }
 }
 
-void cmd_echo(){
-	
+void cmd_echo(char *comment){
+	// Prints out comment with a new line character after.
+	printf("%s\n", comment);
 }
 
 void cmd_help(void){
+	// Prints out the readme file.
+	char s[256];
+
+	FILE *fp;
+	fp = fopen("./readme.txt", "r"); // Starts reading the readme.
+
+	if (fp) {
+		while (fgets(s, 256, fp) != NULL) {
+			printf("%s", s); // Prints out the readme line by line.
+		}
+	printf("\n");
+	}
 	
+	fclose(fp);
 }
 
 void cmd_pause(void){

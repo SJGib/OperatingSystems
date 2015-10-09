@@ -52,9 +52,9 @@ int main(int argc, char *argv[])
         } else if(strcmp(command, "environ") == 0){                                     //AKIRA
             cmd_environ();
         } else if(strcmp(command, "echo") == 0){                                        //TRUYEN
-
+            cmd_echo(buffer); // Need to replace buffer with thing to be echo'd.
         } else if(strcmp(command, "help") == 0){                                        //TRUYEN
-
+            cmd_help();
         } else if(strcmp(command, "pause") == 0){                                       //DENNIS
             void cmd_pause();
         } else if (strcmp(command, "quit") == 0){// quit command -- exit the shell
