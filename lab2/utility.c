@@ -35,14 +35,30 @@ void cmd_clr(void){
 }
 
 char* cmd_dir(){
-	
+
+	// Makes a directory pointer which points to the current directory
+	DIR *dir = opendir(".");
+
+	// Pointer to the struct dirent
+	// Included in the dirent.h
+    struct dirent *contents;
+
+    // if the directory you're in isn't null
+    if(dir != NULL){
+    	// Loop until the current directory has no files
+    	// Prints every file name
+        while((contents = readdir(dir)) != NULL){
+            printf("%s\n", contents->d_name);
+        }
+        close(dir);
+    }
 }
 
-char* cmd_environ(void){
+char* cmd_environ(void){		
 	
 	// Points to an array of char* (an array of strings) which points to an array of characters (string)
 	// Each string is an environment variable for the current process
-	// It comes from the unistd.h
+	// Included in the unistd.h
 	extern char **environ;
         
     // Initialize an index variable for the following loop
