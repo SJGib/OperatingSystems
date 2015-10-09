@@ -34,25 +34,26 @@ int main(int argc, char *argv[])
     while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
     {
         // Perform string tokenization to get the command and argument
+        
 
         // Check the command and execute the operations for each command
-        // cd command -- change the current directory
-        if (strcmp(command, "cd") == 0)
-        {
+        if (strcmp(command, "cd") == 0){// cd command -- change the current directory
             // your code here
-        }
+        } else if(strcmp(command, "clr") == 0){
 
-        // other commands here...
-        
-        // quit command -- exit the shell
-        else if (strcmp(command, "quit") == 0)
-        {
+        } else if(strcmp(command, "dir") == 0){
+
+        } else if(strcmp(command, "environ") == 0){
+
+        } else if(strcmp(command, "echo") == 0){
+
+        } else if(strcmp(command, "help") == 0){
+
+        } else if(strcmp(command, "pause") == 0){
+
+        } else if (strcmp(command, "quit") == 0){// quit command -- exit the shell
             return EXIT_SUCCESS;
-        }
-
-        // Unsupported command
-        else
-        {
+        } else{// Unsupported command
             fputs("Unsupported command, use help to display the manual\n", stderr);
         }
     }

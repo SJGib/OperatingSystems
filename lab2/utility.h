@@ -12,9 +12,6 @@
 // extern keyword such as in the following example:
 // extern void display_help(void);
 
- // prompt input
-extern void cmd_prompt(void);
-
 // print results of commands
 // in: content to be printed
 extern void print(char *content);
