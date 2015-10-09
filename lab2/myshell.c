@@ -13,6 +13,7 @@
 #include <string.h>
 #include "utility.h"
 #include "myshell.h"
+ 
 
 // Put macros or constants here using #define
 #define BUFFER_LEN 256
@@ -34,9 +35,7 @@ int main(int argc, char *argv[])
     while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
     {
         // Perform string tokenization to get the command and argument                  //JACK
-        for(int i=0; i<6; i++){
-            printf("test",i);
-        }
+
         // Check the command and execute the operations for each command
         if (strcmp(command, "cd") == 0){// cd command -- change the current directory   //JACK
             // your code here

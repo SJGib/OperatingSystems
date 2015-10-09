@@ -40,6 +40,20 @@ char* cmd_dir(){
 
 char* cmd_environ(void){
 	
+	// Points to an array of char* (an array of strings) which points to an array of characters (string)
+	// Each string is an environment variable for the current process
+	// It comes from the unistd.h
+	extern char **environ;
+        
+    // Initialize an index variable for the following loop
+    int i = 0;
+
+    // The last entry of the environ array is NULL so loop until NULL
+    // Printing every environment variable as it iterates through the array
+    while(environ[i] != NULL){
+        printf("%s\n", environ[i]);
+        i++;
+    }
 }
 
 char* cmd_echo(){
