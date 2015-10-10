@@ -28,20 +28,20 @@ extern void cmd_clr(void);
 // list directory contents
 // in: directory to be listed
 // out: contents of directory
-extern char* cmd_dir();
+extern void cmd_dir();
 
 // list environment settings
 // out: environment settings
-extern char* cmd_environ(void);
+extern void cmd_environ(void);
 
 // display comment
 // in: comment to be displayed
 // out: comment to be displayed
-extern char* cmd_echo();
+extern void cmd_echo(char *comment);
 
 // display user manual
 // out: user manual
-extern char* cmd_help(void);
+extern void cmd_help(void);
 
 // pause shell until "enter" is pressed
 extern void cmd_pause(void);
