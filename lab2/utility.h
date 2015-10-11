@@ -47,6 +47,6 @@ extern void cmd_help(void);
 extern void cmd_pause(void);
 
 // exit shell
-extern void cmd_quit(void);
+int cmd_quit(void);
 
 #endif /* UTILITY_H_ */

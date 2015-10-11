@@ -98,6 +98,6 @@ void cmd_pause(void){
 	getchar();
 }
 
-void cmd_quit(void){
-	
+int cmd_quit(void){
+	return EXIT_SUCCESS;
 }

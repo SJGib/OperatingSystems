@@ -20,52 +20,95 @@
 // Put global environment variables here
 
 // Define functions declared in myshell.h here
+       
+void tokenize(char *buffer, char *command, char *arg){
+
+    char *newLine = strstr(buffer, "\n");
+    *newLine = 0;
+
+    char *tokens = strtok(buffer, " ");
+    strncpy(command, tokens, BUFFER_LEN);
+    tokens="";
+    while(tokens!=NULL){
+        strncpy(arg, tokens, BUFFER_LEN);
+        tokens = strtok(NULL, " ");
+    }
+}
+
+void commands(char *command, char *arg){
+
+	if (strcmp(command, "cd") == 0){// cd command -- change the current directory   
+        cmd_cd(arg);
+    } else if(strcmp(command, "clr") == 0){   
+        cmd_clr();                                                                  
+    } else if(strcmp(command, "dir") == 0){                                         
+        cmd_dir();
+    } else if(strcmp(command, "environ") == 0){                                     
+        cmd_environ();
+    } else if(strcmp(command, "echo") == 0){                                       
+        cmd_echo(arg); 
+    } else if(strcmp(command, "help") == 0){                                       
+        cmd_help();
+    } else if(strcmp(command, "pause") == 0){                                       
+        cmd_pause();
+    } else if (strcmp(command, "quit") == 0){// quit command -- exit the shell
+       cmd_quit();
+
+       //THIS DOESN'T WORK
+
+    } else{// Unsupported command
+        fputs("Unsupported command, use help to display the manual\n", stderr);
+    }
+}
+
+void myshell(char *command, char *arg){
+
+    char tempCommand[BUFFER_LEN] = { 0 };
+    char tempArg[BUFFER_LEN] = { 0 };
+
+	if (strcmp(command, "myshell") == 0){		
+      	FILE *fp;
+       	char *line = NULL;
+       	size_t len = 0;
+       	char read;
+
+       	fp = fopen(arg, "r");
+       	if(fp == NULL){
+       		printf("Error reading file.\n");
+       	} else{
+       		while((read = getline(&line, &len, fp)) != -1){  	
+     			
+       			//printf("%s", line);			//prints each line in file
+
+     			// tokenize(line, tempCommand, tempArg);		//tokenize line			//SEG FAULTING HERE - NOT SURE WHY		
+     			// commands(tempCommand, tempArg);		//execute tokens
+      		}
+       	}
+       	fclose(fp);
+    }
+}
 
 int main(int argc, char *argv[])
 {
-    // Input buffer and and commands
+    // Input buffer and a/nd commands
     char buffer[BUFFER_LEN] = { 0 };
     char command[BUFFER_LEN] = { 0 };
     char arg[BUFFER_LEN] = { 0 };
 
     // Parse the commands provided using argc and argv
 
-
     // Perform an infinite loop getting command input from users
     while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
     {
-        // Perform string tokenization to get the command and argument                  //JACK
-        char *newLine = strstr(buffer, "\n");
-        *newLine = 0;
+        // Perform string tokenization to get the command and argument                  
+    	tokenize(buffer, command, arg);
 
-        char *tokens = strtok(buffer, " ");
-        strncpy(command, tokens, BUFFER_LEN);
-        tokens="";
-        while(tokens!=NULL){
-            strncpy(arg, tokens, BUFFER_LEN);
-            tokens = strtok(NULL, " ");
-        }
-        
+    	if(strcmp(command, "myshell") == 0){
+    		myshell(command, arg);			//PRETTY SURE THIS IS THE WRONG IMPLEMENTATION OF THE COMMAND. CODE SHOULD BE USEABLE THOUGH
+    	} else {
         // Check the command and execute the operations for each command
-        if (strcmp(command, "cd") == 0){// cd command -- change the current directory   //JACK
-            cmd_cd(arg);
-        } else if(strcmp(command, "clr") == 0){   
-            cmd_clr();                                                                  //DENNIS
-        } else if(strcmp(command, "dir") == 0){                                         //AKIRA
-            cmd_dir();
-        } else if(strcmp(command, "environ") == 0){                                     //AKIRA
-            cmd_environ();
-        } else if(strcmp(command, "echo") == 0){                                        //TRUYEN
-            cmd_echo(arg); 
-        } else if(strcmp(command, "help") == 0){                                        //TRUYEN
-            cmd_help();
-        } else if(strcmp(command, "pause") == 0){                                       //DENNIS
-            void cmd_pause();
-        } else if (strcmp(command, "quit") == 0){// quit command -- exit the shell
-            return EXIT_SUCCESS;
-        } else{// Unsupported command
-            fputs("Unsupported command, use help to display the manual\n", stderr);
-        }
+        	commands(command, arg);
+    	}
     }
     return EXIT_SUCCESS;
 }
