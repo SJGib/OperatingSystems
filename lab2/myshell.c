@@ -34,6 +34,7 @@ void tokenize(char *buffer, char *command, char *arg){
         strncpy(arg, tokens, BUFFER_LEN);
         tokens = strtok(NULL, " ");
     }
+    //TODO: remove tab characters from tokenized strings
 }
 
 void commands(char *command, char *arg){
@@ -46,7 +47,7 @@ void commands(char *command, char *arg){
         cmd_dir();
     } else if(strcmp(command, "environ") == 0){                                     
         cmd_environ();
-    } else if(strcmp(command, "echo") == 0){                                       
+    } else if(strcmp(command, "echo") == 0){ //TODO: delimited by spaces, so it can only echo a single word...                                  
         cmd_echo(arg); 
     } else if(strcmp(command, "help") == 0){                                       
         cmd_help();
@@ -58,6 +59,7 @@ void commands(char *command, char *arg){
        //THIS DOESN'T WORK
 
     } else{// Unsupported command
+    	//TODO: program invocation?
         fputs("Unsupported command, use help to display the manual\n", stderr);
     }
 }
