@@ -22,9 +22,10 @@
 // Define functions declared in myshell.h here
        
 void tokenize(char *buffer, char *command, char *arg){
-
     char *newLine = strstr(buffer, "\n");
-    *newLine = 0;
+    if(newLine!=NULL){
+        *newLine = 0;
+    }
 
     char *tokens = strtok(buffer, " ");
     strncpy(command, tokens, BUFFER_LEN);
@@ -82,9 +83,9 @@ void myshell(char* arg){
     } else{
        	while((read = getline(&line, &len, fp)) != -1){  	
      			
-       		//printf("%s", line);							//prints each line in file
+       		printf("%s", line);							//prints each line in file
 
-     		tokenize(line, tempCommand, tempArg);		//tokenize line 	//SEG FAULTING HERE ON SECOND ITERATION - NOT SURE WHY		
+     		tokenize(line, tempCommand, tempArg);		//tokenize line   // seg fault here, third call
      		commands(tempCommand, tempArg);				//execute tokens
     	}
     	//printf("\n");
