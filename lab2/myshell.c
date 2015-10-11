@@ -84,8 +84,8 @@ void myshell(char* arg){
      			
        		//printf("%s", line);							//prints each line in file
 
-     		//tokenize(line, tempCommand, tempArg);		//tokenize line 	//SEG FAULTING HERE ON SECOND ITERATION - NOT SURE WHY		
-     		//commands(tempCommand, tempArg);				//execute tokens
+     		tokenize(line, tempCommand, tempArg);		//tokenize line 	//SEG FAULTING HERE ON SECOND ITERATION - NOT SURE WHY		
+     		commands(tempCommand, tempArg);				//execute tokens
     	}
     	//printf("\n");
     }
