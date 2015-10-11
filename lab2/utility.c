@@ -99,5 +99,5 @@ void cmd_pause(void){
 }
 
 int cmd_quit(void){
-	return EXIT_SUCCESS;
+	return EXIT_SUCCESS;	//DOESN'T WORK
 }
