@@ -17,7 +17,7 @@
 // in your myshell.c source file
 
 void print(char *content){
-	printf("%s", &content);// print content to screen
+	printf("%s", content);// print content to screen
 
 	free(content);// free the memory at location content
 }
@@ -50,7 +50,7 @@ void cmd_dir(){
         while((contents = readdir(dir)) != NULL){
             printf("%s\n", contents->d_name);
         }
-        close(dir);
+        closedir(dir);
     }
 }
 

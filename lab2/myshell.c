@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
         
         // Check the command and execute the operations for each command
         if (strcmp(command, "cd") == 0){// cd command -- change the current directory   //JACK
-            cmd_cd(&arg);
+            cmd_cd(arg);
         } else if(strcmp(command, "clr") == 0){   
             cmd_clr();                                                                  //DENNIS
         } else if(strcmp(command, "dir") == 0){                                         //AKIRA
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
         } else if(strcmp(command, "environ") == 0){                                     //AKIRA
             cmd_environ();
         } else if(strcmp(command, "echo") == 0){                                        //TRUYEN
-            cmd_echo(buffer); // Need to replace buffer with thing to be echo'd.
+            cmd_echo(arg); // Need to replace buffer with thing to be echo'd.
         } else if(strcmp(command, "help") == 0){                                        //TRUYEN
             cmd_help();
         } else if(strcmp(command, "pause") == 0){                                       //DENNIS
