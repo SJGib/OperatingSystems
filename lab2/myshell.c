@@ -61,36 +61,41 @@ void commands(char *command, char *arg){
     }
 }
 
-void myshell(char *command, char *arg){
+void myshell(char* arg){
 
+	// Created temporary strings for the file inputs
     char tempCommand[BUFFER_LEN] = { 0 };
     char tempArg[BUFFER_LEN] = { 0 };
 
-	if (strcmp(command, "myshell") == 0){		
-      	FILE *fp;
-       	char *line = NULL;
-       	size_t len = 0;
-       	char read;
+    // Create variables for reading the file
+   	FILE *fp;
+   	char *line = NULL;
+   	size_t len = 0;
+   	char read;    
+    
+   	// Open the file in read mode
+    fp = fopen(arg, "r");
 
-       	fp = fopen(arg, "r");
-       	if(fp == NULL){
-       		printf("Error reading file.\n");
-       	} else{
-       		while((read = getline(&line, &len, fp)) != -1){  	
+   	// If there is a file then read it and execute the commands
+    if(fp == NULL){
+    	printf("Error reading file.\n");
+    } else{
+       	while((read = getline(&line, &len, fp)) != -1){  	
      			
-       			//printf("%s", line);			//prints each line in file
+       		//printf("%s", line);							//prints each line in file
 
-     			// tokenize(line, tempCommand, tempArg);		//tokenize line			//SEG FAULTING HERE - NOT SURE WHY		
-     			// commands(tempCommand, tempArg);		//execute tokens
-      		}
-       	}
-       	fclose(fp);
+     		//tokenize(line, tempCommand, tempArg);		//tokenize line 	//SEG FAULTING HERE ON SECOND ITERATION - NOT SURE WHY		
+     		//commands(tempCommand, tempArg);				//execute tokens
+    	}
+    	//printf("\n");
     }
+    // Close the file
+    fclose(fp);
 }
 
 int main(int argc, char *argv[])
 {
-    // Input buffer and a/nd commands
+    // Input buffer and and commands
     char buffer[BUFFER_LEN] = { 0 };
     char command[BUFFER_LEN] = { 0 };
     char arg[BUFFER_LEN] = { 0 };
@@ -104,7 +109,7 @@ int main(int argc, char *argv[])
     	tokenize(buffer, command, arg);
 
     	if(strcmp(command, "myshell") == 0){
-    		myshell(command, arg);			//PRETTY SURE THIS IS THE WRONG IMPLEMENTATION OF THE COMMAND. CODE SHOULD BE USEABLE THOUGH
+    		myshell(arg);			//PRETTY SURE THIS IS THE WRONG IMPLEMENTATION OF THE COMMAND. CODE SHOULD BE USEABLE THOUGH
     	} else {
         // Check the command and execute the operations for each command
         	commands(command, arg);
