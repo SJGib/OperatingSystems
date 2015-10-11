@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
         } else if(strcmp(command, "environ") == 0){                                     //AKIRA
             cmd_environ();
         } else if(strcmp(command, "echo") == 0){                                        //TRUYEN
-            cmd_echo(arg); // Need to replace buffer with thing to be echo'd.
+            cmd_echo(arg); 
         } else if(strcmp(command, "help") == 0){                                        //TRUYEN
             cmd_help();
         } else if(strcmp(command, "pause") == 0){                                       //DENNIS
