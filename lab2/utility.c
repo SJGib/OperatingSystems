@@ -24,7 +24,7 @@ void print(char *content){
 
 void cmd_cd(char *directory){
 	int success;
-	success = chdir(directory);// chang directory, returns 0 for success, otherwise error
+	success = chdir(directory);// change directory, returns 0 for success, otherwise error
 	if(success!=0){
 		printf("Error: %s not found\n", directory);// print if error
 	}
