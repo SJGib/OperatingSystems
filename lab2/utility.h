@@ -46,7 +46,4 @@ extern void cmd_help(void);
 // pause shell until "enter" is pressed
 extern void cmd_pause(void);
 
-// exit shell
-int cmd_quit(void);
-
 #endif /* UTILITY_H_ */
