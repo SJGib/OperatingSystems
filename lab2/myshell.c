@@ -55,6 +55,13 @@ void commands(char *command, char *arg){
         cmd_pause();
     } else{// Unsupported command
     	//TODO: program invocation?
+        if(strstr("./",command)==NULL){
+            for(int i=BUFFER_LEN-3; i>=0; i--){
+                command[i+2] = command[i];
+            }
+            command[0] = '.';
+            command[1] = '/';
+        }
 
         if(access(command, F_OK)==0){
 			pid_t pid = fork();;
