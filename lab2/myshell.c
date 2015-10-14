@@ -59,6 +59,16 @@ void commands(char *command, char *arg){
 
     } else{// Unsupported command
         fputs("Unsupported command, use help to display the manual\n", stderr);
+
+        /*
+        fork();
+		pid_t pid = getpid();
+
+		if(pid==0){
+			printf("Hello\n");
+			return 0;
+		}
+		*/
     }
 }
 
