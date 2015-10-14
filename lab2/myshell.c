@@ -34,6 +34,7 @@ void tokenize(char *buffer, char *command, char *arg){
         strncpy(arg, tokens, BUFFER_LEN);
         tokens = strtok(NULL, " ");
     }
+    //TODO: remove tab characters from tokenized strings
 }
 
 void commands(char *command, char *arg){
@@ -46,18 +47,14 @@ void commands(char *command, char *arg){
         cmd_dir();
     } else if(strcmp(command, "environ") == 0){                                     
         cmd_environ();
-    } else if(strcmp(command, "echo") == 0){                                       
+    } else if(strcmp(command, "echo") == 0){ //TODO: delimited by spaces, so it can only echo a single word...                                  
         cmd_echo(arg); 
     } else if(strcmp(command, "help") == 0){                                       
         cmd_help();
     } else if(strcmp(command, "pause") == 0){                                       
         cmd_pause();
-    } else if (strcmp(command, "quit") == 0){// quit command -- exit the shell
-       cmd_quit();
-
-       //THIS DOESN'T WORK
-
     } else{// Unsupported command
+    	//TODO: program invocation?
         fputs("Unsupported command, use help to display the manual\n", stderr);
 
         /*
@@ -91,14 +88,12 @@ void myshell(char* arg){
     if(fp == NULL){
     	printf("Error reading file.\n");
     } else{
-       	while((read = getline(&line, &len, fp)) != -1){  	
-     			
-       		printf("%s", line);							//prints each line in file
+       	while((read = getline(&line, &len, fp)) != -1){  	          //getline is not supported in c however this works for some reason
+                                                                        //should change later to get rid of the warning
 
-     		tokenize(line, tempCommand, tempArg);		//tokenize line   // seg fault here, third call
-     		commands(tempCommand, tempArg);				//execute tokens
+     		tokenize(line, tempCommand, tempArg);		//tokenize "line"
+     		commands(tempCommand, tempArg);				//execute tokens in the line
     	}
-    	//printf("\n");
     }
     // Close the file
     fclose(fp);
@@ -112,19 +107,22 @@ int main(int argc, char *argv[])
     char arg[BUFFER_LEN] = { 0 };
 
     // Parse the commands provided using argc and argv
+    if(argc == 2){          //if two arguments are given at the start. ie: ./myshell.exe <BATCHFILENAMEHERE>
+        myshell(argv[1]);
+    } else{
+        //Perform an infinite loop getting command input from users
+        while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
+        {
+            // Perform string tokenization to get the command and argument                  
+        	tokenize(buffer, command, arg);
 
-    // Perform an infinite loop getting command input from users
-    while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
-    {
-        // Perform string tokenization to get the command and argument                  
-    	tokenize(buffer, command, arg);
-
-    	if(strcmp(command, "myshell") == 0){
-    		myshell(arg);			//PRETTY SURE THIS IS THE WRONG IMPLEMENTATION OF THE COMMAND. CODE SHOULD BE USEABLE THOUGH
-    	} else {
-        // Check the command and execute the operations for each command
-        	commands(command, arg);
-    	}
+        	if (strcmp(command, "quit") == 0){
+                return EXIT_SUCCESS;
+            } else {
+            // Check the command and execute the operations for each command
+            	commands(command, arg);
+        	}
+        }
     }
     return EXIT_SUCCESS;
 }
