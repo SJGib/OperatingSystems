@@ -32,7 +32,8 @@ void tokenize(char *buffer, char *command, char *arg){
     tokens="";
     while(tokens!=NULL){
         strncpy(arg, tokens, BUFFER_LEN);
-        tokens = strtok(NULL, " ");
+        strcat(tokens,strtok(NULL, " "));
+        strcat(tokens," ");
     }
     //TODO: remove tab characters from tokenized strings
 }
