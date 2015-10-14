@@ -125,6 +125,11 @@ int main(int argc, char *argv[])
     if(argc == 2){          //if two arguments are given at the start. ie: ./myshell.exe <BATCHFILENAMEHERE>
         myshell(argv[1]);
     } else{
+
+        char curr_dir[1024];
+        getcwd(curr_dir, sizeof(curr_dir));
+        printf("%s > ", curr_dir); // Prints out the current directory.
+
         //Perform an infinite loop getting command input from users
         while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
         {
@@ -141,6 +146,10 @@ int main(int argc, char *argv[])
             // Check the command and execute the operations for each command
             	commands(command, arg);
         	}
+
+            char curr_dir[1024];
+            getcwd(curr_dir, sizeof(curr_dir));
+            printf("%s > ", curr_dir); // Prints out the current directory.
         }
     }
     return EXIT_SUCCESS;
