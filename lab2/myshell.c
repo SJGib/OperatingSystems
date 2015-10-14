@@ -23,17 +23,19 @@
        
 void tokenize(char *buffer, char *command, char *arg){
     char *newLine = strstr(buffer, "\n");
-    if(newLine!=NULL){
+    if(newLine != NULL){
         *newLine = 0;
     }
 
     char *tokens = strtok(buffer, " ");
     strncpy(command, tokens, BUFFER_LEN);
-    tokens="";
-    while(tokens!=NULL){
-        strncpy(arg, tokens, BUFFER_LEN);
-        strcat(tokens,strtok(NULL, " "));
-        strcat(tokens," ");
+    tokens = strtok(NULL, " ");
+
+    while(tokens != NULL)
+    {
+        strcat(arg, tokens);    
+        strcat(arg, " ");
+        tokens = strtok(NULL, " ");
     }
     //TODO: remove tab characters from tokenized strings
 }
@@ -116,10 +118,8 @@ void myshell(char* arg){
 
 int main(int argc, char *argv[])
 {
-    // Input buffer and and commands
+    // input buffer
     char buffer[BUFFER_LEN] = { 0 };
-    char command[BUFFER_LEN] = { 0 };
-    char arg[BUFFER_LEN] = { 0 };
 
     // Parse the commands provided using argc and argv
     if(argc == 2){          //if two arguments are given at the start. ie: ./myshell.exe <BATCHFILENAMEHERE>
@@ -128,6 +128,10 @@ int main(int argc, char *argv[])
         //Perform an infinite loop getting command input from users
         while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
         {
+            // Input commands
+            char command[BUFFER_LEN] = { 0 };
+            char arg[BUFFER_LEN] = { 0 };
+
             // Perform string tokenization to get the command and argument                  
         	tokenize(buffer, command, arg);
 
