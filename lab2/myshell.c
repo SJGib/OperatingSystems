@@ -55,17 +55,24 @@ void commands(char *command, char *arg){
         cmd_pause();
     } else{// Unsupported command
     	//TODO: program invocation?
-        fputs("Unsupported command, use help to display the manual\n", stderr);
 
-        /*
-        fork();
-		pid_t pid = getpid();
+        if(access(command, F_OK)==0){
+			pid_t pid = fork();;
 
-		if(pid==0){
-			printf("Hello\n");
-			return 0;
-		}
-		*/
+			if(pid==0){
+				int status = system(command);
+
+				if(status==-1){
+					printf("Error running %s\n", command);
+				}
+
+				exit(0);
+			} else if (pid==-1){
+				perror("fork\n");
+			}
+        } else {
+        	printf("%s, not found\n", command);
+        }
     }
 }
 
