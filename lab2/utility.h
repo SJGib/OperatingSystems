@@ -13,10 +13,6 @@
 // extern keyword such as in the following example:
 // extern void display_help(void);
 
-// print results of commands
-// in: content to be printed
-extern void print(char *content);
-
 // change directory
 // in: new directory
 extern void cmd_cd(char *directory);

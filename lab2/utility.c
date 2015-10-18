@@ -16,12 +16,6 @@
 // Define your utility functions here, these will most likely be functions that you call
 // in your myshell.c source file
 
-void print(char *content){
-	printf("%s", content);// print content to screen
-
-	free(content);// free the memory at location content
-}
-
 void cmd_cd(char *directory){
 	int success;
 	success = chdir(directory);// change directory, returns 0 for success, otherwise error

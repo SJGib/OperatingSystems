@@ -33,10 +33,13 @@ void tokenize(char *buffer, char *command, char *arg){
 
     while(tokens != NULL)
     {
-        strcat(arg, tokens);    
-        strcat(arg, " ");
+        strcat(arg, tokens);
         tokens = strtok(NULL, " ");
+        if(tokens!=NULL){
+            strcat(arg, " ");
+        }
     }
+
     //TODO: remove tab characters from tokenized strings
 }
 
@@ -70,6 +73,10 @@ void commands(char *command, char *arg){
 			pid_t pid = fork();;
 
 			if(pid==0){
+                char *parent[BUFFER_LEN] = { 0 };
+                *parent = getenv("Shell");
+                setenv("Parent", parent, 1);
+
 				int status = system(command);
 
 				if(status==-1){
@@ -118,6 +125,12 @@ void myshell(char* arg){
 
 int main(int argc, char *argv[])
 {
+    char *origin[BUFFER_LEN] = { 0 };
+    readlink("/proc/self/exe", origin, 255);
+    setenv("Shell", origin, 1);
+
+    printf("%s\n", getenv("Shell"));
+
     // input buffer
     char buffer[BUFFER_LEN] = { 0 };
 
