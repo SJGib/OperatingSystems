@@ -89,5 +89,8 @@ void cmd_help(char help_dir[]){
 }
 
 void cmd_pause(void){
-	getchar(); // this is a hack.
+	
+	do {
+    	printf("Press ENTER to continue."); 
+    } while (getchar() != '\n');
 }
