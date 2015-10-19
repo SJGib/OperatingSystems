@@ -89,5 +89,5 @@ void cmd_help(void){
 }
 
 void cmd_pause(void){
-	getchar();
+	getchar(); // this is a hack.
 }

@@ -72,13 +72,13 @@ void commands(char *command, char *arg){
         if(access(command, F_OK)==0){
 			pid_t pid = fork();;    
             printf("PID: %d \n",pid);
+
 			if(pid==0){ // Child Process
                 if(strcmp(arg, "&") == 0){
                     printf(" BACKGROUND\n");
                     freopen( "/dev/null", "r", stdin);
                     freopen( "/dev/null", "w", stdout);
                     freopen( "/dev/null", "w", stderr);
-                    fork();
                 }  
                 char *parent[BUFFER_LEN] = { 0 };
                 *parent = getenv("Shell");
@@ -91,9 +91,12 @@ void commands(char *command, char *arg){
 				}
 
 				exit(0);
-			} else if (pid==-1){
-				perror("fork\n");
+			} else {
+                if (pid==-1){
+				    perror("fork\n");
+                } 
 			}
+
         } else {
         	printf("%s, not found\n", command);
         }
