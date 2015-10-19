@@ -53,14 +53,14 @@ void commands(char *command, char *arg){
         cmd_dir();
     } else if(strcmp(command, "environ") == 0){                                     
         cmd_environ();
-    } else if(strcmp(command, "echo") == 0){ //TODO: delimited by spaces, so it can only echo a single word...                                  
+    } else if(strcmp(command, "echo") == 0){                                 
         cmd_echo(arg); 
     } else if(strcmp(command, "help") == 0){                                       
         cmd_help();
     } else if(strcmp(command, "pause") == 0){                                       
         cmd_pause();
     } else{// Unsupported command
-    	//TODO: program invocation?
+    	
         if(strstr("./",command)==NULL){
             for(int i=BUFFER_LEN-3; i>=0; i--){
                 command[i+2] = command[i];
@@ -70,9 +70,16 @@ void commands(char *command, char *arg){
         }
 
         if(access(command, F_OK)==0){
-			pid_t pid = fork();;
-
-			if(pid==0){
+			pid_t pid = fork();;    
+            printf("PID: %d \n",pid);
+			if(pid==0){ // Child Process
+                if(strcmp(arg, "&") == 0){
+                    printf(" BACKGROUND\n");
+                    freopen( "/dev/null", "r", stdin);
+                    freopen( "/dev/null", "w", stdout);
+                    freopen( "/dev/null", "w", stderr);
+                    fork();
+                }  
                 char *parent[BUFFER_LEN] = { 0 };
                 *parent = getenv("Shell");
                 setenv("Parent", parent, 1);
