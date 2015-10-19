@@ -18,6 +18,7 @@
 #define BUFFER_LEN 256
 
 // Put global environment variables here
+char help_dir[1024];
 
 // Define functions declared in myshell.h here
        
@@ -56,7 +57,7 @@ void commands(char *command, char *arg){
     } else if(strcmp(command, "echo") == 0){                                 
         cmd_echo(arg); 
     } else if(strcmp(command, "help") == 0){                                       
-        cmd_help();
+        cmd_help(help_dir);
     } else if(strcmp(command, "pause") == 0){                                       
         cmd_pause();
     } else{// Unsupported command
@@ -152,6 +153,9 @@ int main(int argc, char *argv[])
         char curr_dir[1024];
         getcwd(curr_dir, sizeof(curr_dir));
         printf("%s > ", curr_dir); // Prints out the current directory.
+
+        getcwd(help_dir, sizeof(help_dir));
+        strcat(help_dir, "/readme.txt");
 
         //Perform an infinite loop getting command input from users
         while (fgets(buffer, BUFFER_LEN, stdin) != NULL)

@@ -37,7 +37,7 @@ extern void cmd_echo(char *comment);
 
 // display user manual
 // out: user manual
-extern void cmd_help(void);
+extern void cmd_help(char help_dir[]);
 
 // pause shell until "enter" is pressed
 extern void cmd_pause(void);

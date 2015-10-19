@@ -71,12 +71,12 @@ void cmd_echo(char *comment){
 	printf("%s\n", comment);
 }
 
-void cmd_help(void){
+void cmd_help(char help_dir[]){
 	// Prints out the readme file.
 	char s[256];
 
 	FILE *fp;
-	fp = fopen("./readme.txt", "r"); // Starts reading the readme.
+	fp = fopen(help_dir, "r"); // Starts reading the readme.
 
 	if (fp) {
 		while (fgets(s, 256, fp) != NULL) {
