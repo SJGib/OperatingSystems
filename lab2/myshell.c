@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
     readlink("/proc/self/exe", origin, 255);
     setenv("Shell", origin, 1);
 
-    printf("%s\n", getenv("Shell"));
+    //printf("%s\n", getenv("Shell"));
 
     // input buffer
     char buffer[BUFFER_LEN] = { 0 };
