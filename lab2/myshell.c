@@ -151,9 +151,9 @@ void batchfile(char* arg){
      		tokenize(line, tempCommand, tempArg);		//tokenize a line in the file
      		execCommands(tempCommand, tempArg);			//execute tokens in the line
     	}
+        // Close the file if it isn't NULL
+        fclose(fp);
     }
-    // Close the file
-    fclose(fp);
 }
 
 int main(int argc, char *argv[])
@@ -166,15 +166,14 @@ int main(int argc, char *argv[])
     // Input buffer
     char buffer[BUFFER_LEN] = { 0 };
 
+    // Locate the readme file at the start of the program before the directory has changed
+    locateReadMe();
+
     // Parse the commands provided using argc and argv
     // If two arguments are given at the start. ie: ./myshell.exe <BATCHFILENAMEHERE>
     if(argc == 2){     
-    	// Locate the readme file at the start of the program before the directory has changed
-        locateReadMe();
         batchfile(argv[1]);
     } else{
-    	// Locate the readme file at the start of the program before the directory has changed
-    	locateReadMe();
     	// Print the current directory to the console before user input
     	printCurrDir();
         //Perform an infinite loop getting command input from users
