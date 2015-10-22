@@ -26,6 +26,10 @@ void tokenize(char *buffer, char *command, char *arg){
     char *newLine = strstr(buffer, "\n");
     if(newLine != NULL){
         *newLine = 0;
+
+        if(buffer==newLine){
+            return;
+        }
     }
 
     char *tokens = strtok(buffer, " ");
