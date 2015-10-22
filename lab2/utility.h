@@ -1,7 +1,7 @@
 /*
  * MyShell Project for SOFE 3950U / CSCI 3020U: Operating Systems
  *
- * Copyright (C) 2015, <GROUP MEMBERS>
+ * Copyright (C) 2015, <Akira Aida - 100526064, Dennis Pacewicz - 100524231, Truyen Truong - 100516976, S Jack Gibson - 1005145564>
  * All rights reserved.
  * 
  */
