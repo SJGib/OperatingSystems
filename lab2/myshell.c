@@ -133,8 +133,8 @@ void execCommands(char *command, char *arg){
 void batchfile(char* arg){
 
 	// Created temporary strings for the file inputs
-    char tempCommand[BUFFER_LEN];
-    char tempArg[BUFFER_LEN];
+    char tempCommand[BUFFER_LEN] = { 0 };
+    char tempArg[BUFFER_LEN] = { 0 };
 
     // Create variables for reading the file
    	FILE *fp;
@@ -181,8 +181,8 @@ int main(int argc, char *argv[])
         while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
         {
             // Input commands
-            char command[BUFFER_LEN];
-            char arg[BUFFER_LEN];
+            char command[BUFFER_LEN] = { 0 };
+            char arg[BUFFER_LEN] = { 0 };
 
             // Perform string tokenization to get the command and argument                  
         	tokenize(buffer, command, arg);
