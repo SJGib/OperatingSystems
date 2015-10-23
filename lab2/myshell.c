@@ -43,6 +43,9 @@ void tokenize(char *buffer, char *command, char *arg){
     if(newLine != NULL){
         *newLine = 0;
     }
+    if(newLine==buffer){
+        return;
+    }
 
     char *tokens = strtok(buffer, " ");
     strncpy(command, tokens, BUFFER_LEN);
