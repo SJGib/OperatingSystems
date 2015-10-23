@@ -53,6 +53,15 @@ void init(){
 	//read in file and put in sudBoard
 }
 
+void *check_row(void *arg){
+	/*parameters *init = (parameters *) arg;
+	int s[2];
+	// loop 1-9 checking # of occurences
+	for(s[0]=1; s[0]<=SUDOKU_SIZE; s[0]++){
+		for(int i=0; i<init)
+	}*/
+}
+
 void *check_grid(void *arg){
 	parameters *init = (parameters *) arg;
 	int s[2];
@@ -61,8 +70,8 @@ void *check_grid(void *arg){
 		// initialize occurences of s[0] to 0
 		s[1]=0;
 		// check each element
-		for(int i=init.row; i<init.row+2; i++){
-			for(int j=init.column; j<init.column+2; j++){
+		for(int i=init->row; i<init.row+2; i++){
+			for(int j=init->column; j<init.column+2; j++){
 				if(puzzle[i][j]==s[0]){
 					// increment # of occurences if s[0] is found
 					s[1]++;
