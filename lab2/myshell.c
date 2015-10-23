@@ -85,9 +85,6 @@ void execCommands(char *command, char *arg){
         cmd_pause();
     } else{// Unsupported command
     	
-
-    	// Move this code into a seperate function and comment it. I have no idea what it does without comments so I can't refactor it. - Akira
-
         if(strstr("./",command)==NULL){
             for(int i=BUFFER_LEN-3; i>=0; i--){
                 command[i+2] = command[i];
@@ -158,7 +155,6 @@ void batchfile(char* arg){
 
 int main(int argc, char *argv[])
 {
-	// I have no idea what this code does. Comment it and move it into a seperate function (refactor) - Akira
     char *origin[BUFFER_LEN] = { 0 };
     readlink("/proc/self/exe", origin, BUFFER_LEN);
     setenv("Shell", origin, 1);
