@@ -1,36 +1,17 @@
-#define _XOPEN_SOURCE 600
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
 #include "sudoku_validator.h"
 
 #define SUDOKU_SIZE 9
 #define NUM_THREADS 11
 
-int sudBoard[SUDOKU_SIZE][SUDOKU_SIZE];
+int puzzle[SUDOKU_SIZE][SUDOKU_SIZE];
+int valid[NUM_THREADS] = {0};
 
-typedef struct
-{
+typedef struct{
 	int row;
 	int column;
-} parameters;
-
-void init(){
-	//read in file and put in sudBoard
-}
-
-void *checkSeg(void* arg){
-	parameters* par = (parameters*) arg;
-
-
-
-
-	return NULL;
-}
+} parameters
 
 int main(){
-
 	//initialize sudoku board
 	init();
 
@@ -60,3 +41,28 @@ int main(){
 	}
 }
 
+void init(){
+	//read in file and put in sudBoard
+}
+
+void *check_grid(void *arg){
+	parameters *init = (parameters *) arg;
+	int s[2];
+	for(s[0]; s[0]<=SUDOKU_SIZE; s[0]++){
+		s[1]=0;
+		for(int i=init.row; i<init.row+2; i++){
+			for(int j=init.column; j<init.column+2; j++){
+				if(puzzle[i][j]==s[0]){
+					s[1]++;
+				}
+			}
+		}
+		if(s[1]!=1){
+			valid[(init.row/3)+init.column]=0;
+			return NULL;
+		}
+	}
+	valid[(init.row/3)+init.column]=1;
+
+	return NULL;
+}
