@@ -75,6 +75,28 @@ void *check_row(void *arg){
 	return NULL;
 }
 
+void *check_column(void *arg){
+	parameters *init = (parameters *) arg;
+	int s[2];
+	// loop through each column
+	for(int j=0; j<SUDOKU_SIZE; j++){
+		// loop 1-9 checking # of occurences
+		for(s[0]=1; s[0]<=SUDOKU_SIZE; s[0]++){
+			for(int i=0; i<SUDOKU_SIZE; i++){
+				if(puzzle[i][j]==s[0]){
+					s[1]++;
+				}
+			}
+			if(s[1]!=1){
+				valid[10] = 0;
+				return NULL;
+			}
+		}
+	}
+	valid[10] = 1;
+	return NULL;
+}
+
 void *check_grid(void *arg){
 	parameters *init = (parameters *) arg;
 	int s[2];
