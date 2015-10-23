@@ -54,6 +54,11 @@ int main(){
 	for(int i = 0; i < NUM_THREADS; i++){
 		pthread_join(pth[i], NULL);
 	}
+
+	for(int i = 0; i < NUM_THREADS; i++){
+		printf("%d", valid[i]);
+	}
+	printf("\n");
 }
 
 void init(){
