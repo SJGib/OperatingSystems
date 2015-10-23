@@ -6,8 +6,8 @@
 
 void init();
 
-void check_row(void *arg);
+void *check_row(void *arg);
 
-void check_column(void *arg);
+void *check_column(void *arg);
 
-void check_grid(void *arg);
+void *check_grid(void *arg);

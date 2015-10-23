@@ -9,7 +9,7 @@ int valid[NUM_THREADS] = {0};
 typedef struct{
 	int row;
 	int column;
-} parameters
+} parameters;
 
 int main(){
 	//initialize sudoku board
@@ -37,7 +37,15 @@ int main(){
 
 	//start segment checks
 	for(int i = 0; i < 9; i++){
-		pthread_create(&pth[i], 0, checkSeg, (void *)&initials[i]);
+		pthread_create(&pth[i], 0, check_grid, (void *)&initials[i]);
+	}
+	pthread_create(&pth[10], 0, check_row, (void *)&initials[10]);
+	pthread_create(&pth[11], 0, check_column, (void *)&initials[11]);
+
+
+	//join segments
+	for(int i = 0; i < NUM_THREADS; i++){
+		pthread_join(pth[i], NULL);
 	}
 }
 
@@ -63,11 +71,11 @@ void *check_grid(void *arg){
 		}
 		// check if s[0] has a valid number of occurences
 		if(s[1]!=1){
-			valid[(init.row/3)+init.column]=0;
+			valid[(init->row/3)+init->column]=0;
 			return NULL;
 		}
 	}
-	valid[(init.row/3)+init.column]=1;
+	valid[(init->row/3)+init->column]=1;
 
 	return NULL;
 }
