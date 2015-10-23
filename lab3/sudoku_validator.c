@@ -9,7 +9,7 @@ int valid[NUM_THREADS] = {0};
 typedef struct{
 	int row;
 	int column;
-} parameters
+} parameters;
 
 int main(){
 	//initialize sudoku board
@@ -37,7 +37,15 @@ int main(){
 
 	//start segment checks
 	for(int i = 0; i < 9; i++){
-		pthread_create(&pth[i], 0, checkSeg, (void *)&initials[i]);
+		pthread_create(&pth[i], 0, check_grid, (void *)&initials[i]);
+	}
+	pthread_create(&pth[10], 0, check_row, (void *)&initials[10]);
+	pthread_create(&pth[11], 0, check_column, (void *)&initials[11]);
+
+
+	//join segments
+	for(int i = 0; i < NUM_THREADS; i++){
+		pthread_join(pth[i], NULL);
 	}
 }
 
@@ -48,21 +56,21 @@ void init(){
 void *check_grid(void *arg){
 	parameters *init = (parameters *) arg;
 	int s[2];
-	for(s[0]; s[0]<=SUDOKU_SIZE; s[0]++){
+	for(s[0]=1; s[0]<=SUDOKU_SIZE; s[0]++){
 		s[1]=0;
-		for(int i=init.row; i<init.row+2; i++){
-			for(int j=init.column; j<init.column+2; j++){
+		for(int i=init->row; i<init->row+2; i++){
+			for(int j=init->column; j<init->column+2; j++){
 				if(puzzle[i][j]==s[0]){
 					s[1]++;
 				}
 			}
 		}
 		if(s[1]!=1){
-			valid[(init.row/3)+init.column]=0;
+			valid[(init->row/3)+init->column]=0;
 			return NULL;
 		}
 	}
-	valid[(init.row/3)+init.column]=1;
+	valid[(init->row/3)+init->column]=1;
 
 	return NULL;
 }
