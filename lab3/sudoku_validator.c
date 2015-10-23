@@ -2,6 +2,7 @@
 
 #define SUDOKU_SIZE 9
 #define NUM_THREADS 11
+#define BUFFER_LEN 256
 
 int puzzle[SUDOKU_SIZE][SUDOKU_SIZE];
 int valid[NUM_THREADS] = {0};
@@ -10,6 +11,26 @@ typedef struct{
 	int row;
 	int column;
 } parameters;
+
+void tokenize(char *buffer, char *command, char *arg){
+    char *newLine = strstr(buffer, "\n");
+    if(newLine != NULL){
+        *newLine = 0;
+    }
+
+    char *tokens = strtok(buffer, " ");
+    strncpy(command, tokens, BUFFER_LEN);
+    tokens = strtok(NULL, " ");
+
+    while(tokens != NULL)
+    {
+        strcat(arg, tokens);
+        tokens = strtok(NULL, " ");
+        if(tokens!=NULL){
+            strcat(arg, " ");
+        }
+    }
+}
 
 int main(){
 	//initialize sudoku board
@@ -28,19 +49,19 @@ int main(){
 	}
 
 	//row check
-	initials[10].row = 0;
-	initials[10].column = 0;
+	initials[9].row = 0;
+	initials[9].column = 0;
 
 	//col check
-	initials[11].row = 0;
-	initials[11].column = 0;
+	initials[10].row = 0;
+	initials[10].column = 0;
 
 	//start segment checks
 	for(int i = 0; i < 9; i++){
 		pthread_create(&pth[i], 0, check_grid, (void *)&initials[i]);
 	}
-	pthread_create(&pth[10], 0, check_row, (void *)&initials[10]);
-	pthread_create(&pth[11], 0, check_column, (void *)&initials[11]);
+	pthread_create(&pth[9], 0, check_row, (void *)&initials[9]);
+	pthread_create(&pth[10], 0, check_column, (void *)&initials[10]);
 
 
 	//join segments
@@ -50,7 +71,24 @@ int main(){
 }
 
 void init(){
-	//read in file and put in sudBoard
+	FILE *fp;
+	fp = fopen("puzzle.txt", "r");
+	int i = 0;
+	int j = 0;
+
+   	char line[BUFFER_LEN];
+
+    if(fp == NULL){
+    	printf("Error reading file.\n");
+    } else{
+    	while(fgets(line, BUFFER_LEN, fp)){
+    		puzzle[i][j] = tokenize(line);
+
+    		i++;
+		}
+        fclose(fp);
+    }
+
 }
 
 void *check_grid(void *arg){
