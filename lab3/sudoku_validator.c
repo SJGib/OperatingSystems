@@ -78,6 +78,7 @@ void init(){
 
     		for(int i = 0; i < SUDOKU_SIZE; i++){
 
+    			printf("%d,%d: %d \n", i, col, row[i]);
     			puzzle[i][col] = row[i];
 
     		}
