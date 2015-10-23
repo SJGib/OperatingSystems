@@ -53,18 +53,25 @@ int main(){
 void init(){
 	FILE *fp;
 	fp = fopen("puzzle.txt", "r");
-	int i = 0;
-	int j = 0;
+	int col = 0;
 
    	char line[BUFFER_LEN];
+	char *row[SUDOKU_SIZE] = { 0 };
 
     if(fp == NULL){
     	printf("Error reading file.\n");
     } else{
     	while(fgets(line, BUFFER_LEN, fp)){
-    		puzzle[i][j] = tokenize(line);
+    		
+    		tokenize(line, &row);
 
-    		i++;
+    		for(int i = 0; i < SUDOKU_SIZE; i++){
+
+    			puzzle[i][j] = row[i];
+
+    		}
+    		col++;
+
 		}
         fclose(fp);
     }
