@@ -58,7 +58,7 @@ int main(){
 
 void init(){
 	FILE *fp;
-	fp = fopen("puzzle.txt", "r");
+	fp = fopen("solved_puzzle.txt", "r");
 	int col = 0;
 
    	char line[BUFFER_LEN];
