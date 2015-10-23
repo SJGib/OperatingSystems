@@ -12,26 +12,6 @@ typedef struct{
 	int column;
 } parameters;
 
-void tokenize(char *buffer, char *command, char *arg){
-    char *newLine = strstr(buffer, "\n");
-    if(newLine != NULL){
-        *newLine = 0;
-    }
-
-    char *tokens = strtok(buffer, " ");
-    strncpy(command, tokens, BUFFER_LEN);
-    tokens = strtok(NULL, " ");
-
-    while(tokens != NULL)
-    {
-        strcat(arg, tokens);
-        tokens = strtok(NULL, " ");
-        if(tokens!=NULL){
-            strcat(arg, " ");
-        }
-    }
-}
-
 int main(){
 	//initialize sudoku board
 	init();
@@ -89,6 +69,21 @@ void init(){
         fclose(fp);
     }
 
+}
+
+void tokenize(char *line, int array[]){
+    char *newLine = strstr(line, "\n");
+    if(newLine != NULL){
+        *newLine = 0;
+    }
+
+    char *tokens = strtok(line, " ");
+    int i=0;
+    while(tokens != NULL && i<SUDOKU_SIZE)
+    {
+        array[i++] = (int) *tokens;
+        tokens = strtok(NULL, " ");
+    }
 }
 
 void *check_row(void *arg){
