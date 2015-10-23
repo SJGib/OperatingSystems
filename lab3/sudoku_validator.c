@@ -99,7 +99,7 @@ void tokenize(char *line, int *array){
     int i=0;
     while(tokens != NULL && i<SUDOKU_SIZE)
     {
-        array[i++] = (int) *tokens;
+        array[i++] = (int) (*tokens - '0');
         tokens = strtok(NULL, " ");
     }
 }
