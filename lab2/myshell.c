@@ -1,7 +1,7 @@
 /*
  * MyShell Project for SOFE 3950U / CSCI 3020U: Operating Systems
  *
- * Copyright (C) 2015, <GROUP MEMBERS>
+ * Copyright (C) 2015, <Akira Aida - 100526064, Dennis Pacewicz - 100524231, Truyen Truong - 100516976, S Jack Gibson - 1005145564>
  * All rights reserved.
  * 
  */
@@ -16,20 +16,32 @@
 
 // Put macros or constants here using #define
 #define BUFFER_LEN 256
+#define HELP_LEN 1024
 
 // Put global environment variables here
-char help_dir[1024];
+char help_dir[HELP_LEN];	// Stores the location of the readme.txt
 
 // Define functions declared in myshell.h here
-       
+void locateReadMe(){
+	// Puts the current working directory into the variable help_dir
+    getcwd(help_dir, sizeof(help_dir));
+    // Adds /readme.txt to the current working directory so the location of the readme is globally available
+    strcat(help_dir, "/readme.txt");
+}
+
+void printCurrDir(){
+	// Variable to store the current working directory
+	char curr_dir[HELP_LEN];
+	// Puts the current working directory into the variable curr_dir
+    getcwd(curr_dir, sizeof(curr_dir));
+    // Prints the current working directory
+    printf("%s > ", curr_dir);
+}
+
 void tokenize(char *buffer, char *command, char *arg){
     char *newLine = strstr(buffer, "\n");
     if(newLine != NULL){
         *newLine = 0;
-
-        if(buffer==newLine){
-            return;
-        }
     }
 
     char *tokens = strtok(buffer, " ");
@@ -48,24 +60,34 @@ void tokenize(char *buffer, char *command, char *arg){
     //TODO: remove tab characters from tokenized strings
 }
 
-void commands(char *command, char *arg){
+void execCommands(char *command, char *arg){
 
-	if (strcmp(command, "cd") == 0){// cd command -- change the current directory   
+	if (strcmp(command, "cd") == 0){
+		// Changes the directory
         cmd_cd(arg);
     } else if(strcmp(command, "clr") == 0){   
+    	// Clears the shell
         cmd_clr();                                                                  
-    } else if(strcmp(command, "dir") == 0){                                         
+    } else if(strcmp(command, "dir") == 0){ 
+    	// Lists all files and directories in the current working directory                                        
         cmd_dir();
-    } else if(strcmp(command, "environ") == 0){                                     
+    } else if(strcmp(command, "environ") == 0){                            
+    	// Lists all the environment variables         
         cmd_environ();
-    } else if(strcmp(command, "echo") == 0){                                 
+    } else if(strcmp(command, "echo") == 0){  
+    	// Echoes the inputted words after "echo"                               
         cmd_echo(arg); 
-    } else if(strcmp(command, "help") == 0){                                       
+    } else if(strcmp(command, "help") == 0){     
+    	// Prints the readme.txt to the shell                              
         cmd_help(help_dir);
-    } else if(strcmp(command, "pause") == 0){                                       
+    } else if(strcmp(command, "pause") == 0){   
+    	// Pauses the shell                                    
         cmd_pause();
     } else{// Unsupported command
     	
+
+    	// Move this code into a seperate function and comment it. I have no idea what it does without comments so I can't refactor it. - Akira
+
         if(strstr("./",command)==NULL){
             for(int i=BUFFER_LEN-3; i>=0; i--){
                 command[i+2] = command[i];
@@ -108,7 +130,7 @@ void commands(char *command, char *arg){
     }
 }
 
-void myshell(char* arg){
+void batchfile(char* arg){
 
 	// Created temporary strings for the file inputs
     char tempCommand[BUFFER_LEN] = { 0 };
@@ -116,9 +138,7 @@ void myshell(char* arg){
 
     // Create variables for reading the file
    	FILE *fp;
-   	char *line = NULL;
-   	size_t len = 0;
-   	char read;    
+   	char line[BUFFER_LEN];
     
    	// Open the file in read mode
     fp = fopen(arg, "r");
@@ -127,40 +147,35 @@ void myshell(char* arg){
     if(fp == NULL){
     	printf("Error reading file.\n");
     } else{
-       	while((read = getline(&line, &len, fp)) != -1){  	          //getline is not supported in c however this works for some reason
-                                                                        //should change later to get rid of the warning
-
-     		tokenize(line, tempCommand, tempArg);		//tokenize "line"
-     		commands(tempCommand, tempArg);				//execute tokens in the line
+    	while(fgets(line, BUFFER_LEN, fp)){
+     		tokenize(line, tempCommand, tempArg);		//tokenize a line in the file
+     		execCommands(tempCommand, tempArg);			//execute tokens in the line
     	}
+        // Close the file if it isn't NULL
+        fclose(fp);
     }
-    // Close the file
-    fclose(fp);
 }
 
 int main(int argc, char *argv[])
 {
+	// I have no idea what this code does. Comment it and move it into a seperate function (refactor) - Akira
     char *origin[BUFFER_LEN] = { 0 };
-    readlink("/proc/self/exe", origin, 255);
+    readlink("/proc/self/exe", origin, BUFFER_LEN);
     setenv("Shell", origin, 1);
 
-    //printf("%s\n", getenv("Shell"));
-
-    // input buffer
+    // Input buffer
     char buffer[BUFFER_LEN] = { 0 };
 
+    // Locate the readme file at the start of the program before the directory has changed
+    locateReadMe();
+
     // Parse the commands provided using argc and argv
-    if(argc == 2){          //if two arguments are given at the start. ie: ./myshell.exe <BATCHFILENAMEHERE>
-        myshell(argv[1]);
+    // If two arguments are given at the start. ie: ./myshell.exe <BATCHFILENAMEHERE>
+    if(argc == 2){     
+        batchfile(argv[1]);
     } else{
-
-        char curr_dir[1024];
-        getcwd(curr_dir, sizeof(curr_dir));
-        printf("%s > ", curr_dir); // Prints out the current directory.
-
-        getcwd(help_dir, sizeof(help_dir));
-        strcat(help_dir, "/readme.txt");
-
+    	// Print the current directory to the console before user input
+    	printCurrDir();
         //Perform an infinite loop getting command input from users
         while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
         {
@@ -175,12 +190,10 @@ int main(int argc, char *argv[])
                 return EXIT_SUCCESS;
             } else {
             // Check the command and execute the operations for each command
-            	commands(command, arg);
+            	execCommands(command, arg);
         	}
-
-            char curr_dir[1024];
-            getcwd(curr_dir, sizeof(curr_dir));
-            printf("%s > ", curr_dir); // Prints out the current directory.
+        	// Print the current directory to the console before user input
+        	printCurrDir();
         }
     }
     return EXIT_SUCCESS;

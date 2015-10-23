@@ -1,7 +1,7 @@
 /*
  * MyShell Project for SOFE 3950U / CSCI 3020U: Operating Systems
  *
- * Copyright (C) 2015, <GROUP MEMBERS>
+ * Copyright (C) 2015, <Akira Aida - 100526064, Dennis Pacewicz - 100524231, Truyen Truong - 100516976, S Jack Gibson - 1005145564>
  * All rights reserved.
  * 
  */
@@ -39,8 +39,8 @@ void cmd_dir(){
 
     // if the directory you're in isn't null
     if(dir != NULL){
-    	// Loop until the current directory has no files
-    	// Prints every file name
+    	// Loop until the current directory has no more contents to list
+    	// Prints every file name and directory name
         while((contents = readdir(dir)) != NULL){
             printf("%s\n", contents->d_name);
         }
@@ -73,21 +73,23 @@ void cmd_echo(char *comment){
 
 void cmd_help(char help_dir[]){
 	// Prints out the readme file.
-	char s[256];
+	char line[256];
 
 	FILE *fp;
 	fp = fopen(help_dir, "r"); // Starts reading the readme.
 
-	if (fp) {
-		while (fgets(s, 256, fp) != NULL) {
-			printf("%s", s); // Prints out the readme line by line.
+	if(fp){
+		while (fgets(line, 256, fp) != NULL) {
+			printf("%s", line); // Prints out the readme line by line.
 		}
-	printf("\n");
+		printf("\n");
 	}
-	
 	fclose(fp);
 }
 
 void cmd_pause(void){
-	getchar(); // this is a hack.
+	
+	do {
+    	printf("Press ENTER to continue."); 
+    } while (getchar() != '\n');
 }
