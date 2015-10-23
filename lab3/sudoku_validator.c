@@ -1,3 +1,9 @@
+#define _XOPEN_SOURCE 600
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <pthread.h>
 #include "sudoku_validator.h"
 
 #define SUDOKU_SIZE 9
@@ -56,18 +62,18 @@ void init(){
 	int col = 0;
 
    	char line[BUFFER_LEN];
-	char *row[SUDOKU_SIZE] = { 0 };
+	int row[SUDOKU_SIZE] = { 0 };
 
     if(fp == NULL){
     	printf("Error reading file.\n");
     } else{
     	while(fgets(line, BUFFER_LEN, fp)){
     		
-    		tokenize(line, &row);
+    		tokenize(line, row);
 
     		for(int i = 0; i < SUDOKU_SIZE; i++){
 
-    			puzzle[i][j] = row[i];
+    			puzzle[i][col] = row[i];
 
     		}
     		col++;
@@ -78,7 +84,7 @@ void init(){
 
 }
 
-void tokenize(char *line, int array[]){
+void tokenize(char *line, int *array){
     char *newLine = strstr(line, "\n");
     if(newLine != NULL){
         *newLine = 0;

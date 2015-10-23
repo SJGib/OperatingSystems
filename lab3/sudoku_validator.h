@@ -1,12 +1,6 @@
-#define _XOPEN_SOURCE 600
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-
 void init();
 
-void tokenize(char *line, int array[]);
+void tokenize(char *line, int *array);
 
 void *check_row(void *arg);
 
