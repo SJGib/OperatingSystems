@@ -162,6 +162,10 @@ int main(int argc, char *argv[])
     readlink("/proc/self/exe", origin, BUFFER_LEN);
     setenv("Shell", origin, 1);
 
+    char *current_dir[BUFFER_LEN] = { 0 };
+    getcwd(current_dir, BUFFER_LEN);
+    setenv("PWD", current_dir, 1);
+
     // Input buffer
     char buffer[BUFFER_LEN] = { 0 };
 

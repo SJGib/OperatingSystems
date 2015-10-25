@@ -22,6 +22,11 @@ void cmd_cd(char *directory){
 	if(success!=0){
 		printf("Error: %s not found\n", directory);// print if error
 	}
+
+	// set PWD to new location
+	char *current_dir[256] = { 0 };
+    getcwd(current_dir, 256);
+    setenv("PWD", current_dir, 1);
 }
 
 void cmd_clr(void){
