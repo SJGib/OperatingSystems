@@ -26,7 +26,7 @@ void locateReadMe(){
 	// Puts the current working directory into the variable help_dir
     getcwd(help_dir, sizeof(help_dir));
     // Adds /readme.txt to the current working directory so the location of the readme is globally available
-    strcat(help_dir, "/readme.txt");
+    strcat(help_dir, "/readme");
 }
 
 void printCurrDir(){
