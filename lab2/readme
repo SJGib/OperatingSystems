@@ -1,0 +1,56 @@
+*********************************************
+* Operating Systems - Lab #2: Shell Project *
+*-------------------------------------------*
+*                                           *
+*               User Manual                 *
+*                                           *
+*-------------------------------------------*
+* cd <directory>                            *
+*                                           *
+*   -Changes from the current directory to  *
+*    <director>.                            *
+*                                           *
+* clr                                       *
+*                                           *
+*   -Clears the screen.                     *
+*                                           *
+* dir <directory>                           *
+*                                           *
+*   -Lists the content of <directory>.      *
+*                                           *
+* environ                                   *
+*                                           *
+*   -Lists all the environment strings.     *
+*                                           *
+* echo <comment>                            *
+*                                           *
+*   -Displays the <comment>.                *
+*                                           *
+* help                                      *
+*                                           *
+*   -Displays the user manual.              *
+*                                           *
+* pause                                     *
+*                                           *
+*   -Pauses everything in the shell until   *
+*    'Enter' is pressed.                    *
+*                                           *
+* quit                                      *
+*                                           *
+*   -Exits the shell.                       *
+* 
+  The shell also supports running a
+  batchfile during the execution of 
+  the shell. 
+
+                                          *
+*-------------------------------------------*
+*                                           *
+* Group Members:                            *
+*                                           *
+* Akira Aida (100526064)                    *
+* S Jack Gibson (100514556)                 *
+* Dennis Pacwicz (100524231)                *
+* Truyen Truong (100516976)                 *
+*                                           *
+*********************************************
