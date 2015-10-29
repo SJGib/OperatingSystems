@@ -41,7 +41,10 @@
 * 
   The shell also supports running a
   batchfile during the execution of 
-  the shell. 
+  the shell. This batchfile can be executed 
+  by running the executable and giving it
+  a file name. 
+  ie. ./myshell.exe <batchfile>
 
                                           *
 *-------------------------------------------*
