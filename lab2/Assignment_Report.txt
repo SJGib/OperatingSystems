@@ -1,0 +1,14 @@
+Assignment Report
+
+For this assignment, we worked in a group of four utilising Github to share and combine several different portions of 
+code. This allowed us to work as a dynamic team to quickly and concisely finish the assignment in a very efficient 
+manner. For the assignment, we implemented the needed functionality of the shell lab. 
+This included i-ix and 2-6: 
+ - cd, changes directory
+ - clr, clears the screen
+ - dir, lists the contents of the directory
+ - environ, lists environment strings
+ - echo, prints to screen
+ - help, display user manual
+ - pause, pause shell until 'enter' is pressed
+ - quit, exits shell

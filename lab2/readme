@@ -47,6 +47,10 @@
 *  a file name.                             *
 *  ie. ./myshell.exe <batchfile>            *
 *                                           *
+*  All other input prompts the shell to	    *
+*  search for a file by that name to be run *
+*  in as a separate process.		    *
+*					    *
 *-------------------------------------------*
 *                                           *
 *  Group Members:                           *
