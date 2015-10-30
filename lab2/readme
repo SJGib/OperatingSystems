@@ -5,47 +5,55 @@
 *               User Manual                 *
 *                                           *
 *-------------------------------------------*
-* cd <directory>                            *
+*                                           *
+*  cd <directory>                           *
 *                                           *
 *   -Changes from the current directory to  *
 *    <director>.                            *
 *                                           *
-* clr                                       *
+*  clr                                      *
 *                                           *
 *   -Clears the screen.                     *
 *                                           *
-* dir <directory>                           *
+*  dir <directory>                          *
 *                                           *
 *   -Lists the content of <directory>.      *
 *                                           *
-* environ                                   *
+*  environ                                  *
 *                                           *
 *   -Lists all the environment strings.     *
 *                                           *
-* echo <comment>                            *
+*  echo <comment>                           *
 *                                           *
 *   -Displays the <comment>.                *
 *                                           *
-* help                                      *
+*  help                                     *
 *                                           *
 *   -Displays the user manual.              *
 *                                           *
-* pause                                     *
+*  pause                                    *
 *                                           *
 *   -Pauses everything in the shell until   *
 *    'Enter' is pressed.                    *
 *                                           *
-* quit                                      *
+*  quit                                     *
 *                                           *
 *   -Exits the shell.                       *
 *                                           *
+*  The shell also supports running a        *
+*  batchfile during the execution of the    *
+*  shell. This batchfile can be executed    *
+*  by running the executable and giving it  *
+*  a file name.                             *
+*  ie. ./myshell.exe <batchfile>            *
+*                                           *
 *-------------------------------------------*
 *                                           *
-* Group Members:                            *
+*  Group Members:                           *
 *                                           *
-* Akira Aida (100526064)                    *
-* S Jack Gibson (100514556)                 *
-* Dennis Pacwicz (100524231)                *
-* Truyen Truong (100516976)                 *
+*  Akira Aida (100526064)                   *
+*  S Jack Gibson (100514556)                *
+*  Dennis Pacwicz (100524231)               *
+*  Truyen Truong (100516976)                *
 *                                           *
 *********************************************
