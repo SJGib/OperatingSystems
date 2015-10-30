@@ -44,27 +44,23 @@ int main(){
 
 	//start segment checks
 	for(int i = 0; i < 9; i++){
-		pthread_create(&pth[i], 0, check_grid, (void *)&initials[i]);
+		pthread_create(&pth[i], 0, check_all_grids, (void *)&initials[i]);
 	}
-	pthread_create(&pth[9], 0, check_row, (void *)&initials[9]);
-	pthread_create(&pth[10], 0, check_column, (void *)&initials[10]);
+	pthread_create(&pth[9], 0, check_all_rows, (void *)&initials[9]);
+	pthread_create(&pth[10], 0, check_all_columns, (void *)&initials[10]);
 
 
 	//join segments
 	for(int i = 0; i < NUM_THREADS; i++){
 		pthread_join(pth[i], NULL);
 	}
-
-	for(int i = 0; i < NUM_THREADS; i++){
-		printf("%d", valid[i]);
-	}
-	printf("\n");
 }
 
 void init(){
 	FILE *fp;
 	fp = fopen("solved_puzzle.txt", "r");
-	int col = 0;
+	// row #
+	int i = 0;
 
    	char line[BUFFER_LEN];
 	int row[SUDOKU_SIZE] = { 0 };
@@ -73,17 +69,14 @@ void init(){
     	printf("Error reading file.\n");
     } else{
     	while(fgets(line, BUFFER_LEN, fp)){
-    		
+    		// read line into 
     		tokenize(line, row);
 
-    		for(int i = 0; i < SUDOKU_SIZE; i++){
-
-    			printf("%d,%d: %d \n", i, col, row[i]);
-    			puzzle[i][col] = row[i];
-
+    		// assign elements in row to their places in puzzle
+    		for(int col = 0; col < SUDOKU_SIZE; col++){
+    			puzzle[i][col] = row[col];
     		}
-    		col++;
-
+    		i++;
 		}
         fclose(fp);
     }
@@ -91,74 +84,106 @@ void init(){
 }
 
 void tokenize(char *line, int *array){
+	// change end of line character for tokenizer
     char *newLine = strstr(line, "\n");
     if(newLine != NULL){
-        *newLine = 0;
+        *newLine = ' ';
     }
 
+    // break line into strings separated by spaces
     char *tokens = strtok(line, " ");
     int i=0;
-    while(tokens != NULL && i<SUDOKU_SIZE)
-    {
+    while(tokens != NULL && i<SUDOKU_SIZE){
+    	// convert string to integer
         array[i++] = (int) (*tokens - '0');
         tokens = strtok(NULL, " ");
     }
 }
 
-void *check_row(void *arg){
-	parameters *init = (parameters *) arg;
-	int s[2];
+void *check_all_rows(void *arg){
 	// loop through each row
 	for(int j=0; j<SUDOKU_SIZE; j++){
-		// loop 1-9 checking # of occurences
-		for(s[0]=1; s[0]<=SUDOKU_SIZE; s[0]++){
-			for(int i=0; i<SUDOKU_SIZE; i++){
-				if(puzzle[j][i]==s[0]){
-					s[1]++;
-				}
-			}
-			if(s[1]!=1){
-				valid[9] = 0;
-				return NULL;
-			}
+		if(check_row(j)!=1){
+			valid[9] = 0;
+			return NULL;
 		}
 	}
 	valid[9] = 1;
 	return NULL;
 }
 
-void *check_column(void *arg){
-	parameters *init = (parameters *) arg;
+int check_row(int row){
 	int s[2];
+	// loop for each possible number (1-9)
+	for(s[0]=1; s[0]<=SUDOKU_SIZE; s[0]++){
+		// count of s[0] occurences
+		s[1]=0;
+		// loop through each element of the row
+		for(int i=0; i<SUDOKU_SIZE; i++){
+			if(puzzle[row][i]==s[0]){
+				s[1]++;
+			}
+		}
+		if(s[1]!=1){
+			return 0;
+		}
+	}
+	return 1;
+}
+
+void *check_all_columns(void *arg){
 	// loop through each column
 	for(int j=0; j<SUDOKU_SIZE; j++){
-		// loop 1-9 checking # of occurences
-		for(s[0]=1; s[0]<=SUDOKU_SIZE; s[0]++){
-			for(int i=0; i<SUDOKU_SIZE; i++){
-				if(puzzle[i][j]==s[0]){
-					s[1]++;
-				}
-			}
-			if(s[1]!=1){
-				valid[10] = 0;
-				return NULL;
-			}
+		if(check_column(j)!=1){
+			valid[10] = 0;
+			return NULL;
 		}
 	}
 	valid[10] = 1;
 	return NULL;
 }
 
-void *check_grid(void *arg){
-	parameters *init = (parameters *) arg;
+int check_column(int col){
 	int s[2];
-	// loop 1-9 checking # of occurences
+	// loop for each possible number (1-9)
 	for(s[0]=1; s[0]<=SUDOKU_SIZE; s[0]++){
-		// initialize occurences of s[0] to 0
+		// count of s[0] occurences
 		s[1]=0;
-		// check each element
-		for(int i=init->row; i<init->row+2; i++){
-			for(int j=init->column; j<init->column+2; j++){
+		// loop through each element of the column
+		for(int i=0; i<SUDOKU_SIZE; i++){
+			if(puzzle[i][col]==s[0]){
+				s[1]++;
+			}
+		}
+		if(s[1]!=1){\
+			return 0;
+		}
+	}
+	return 1;
+}
+
+void *check_all_grids(void *arg){
+	// loop through grids
+	for(int i=0; i<SUDOKU_SIZE; i++){
+		if(check_grid((i%3)*3,(i/3)*3)!=1){
+			valid[i] = 0;
+			return NULL;
+		} else {
+			valid[i]=1;
+		}
+	}
+	return NULL;
+}
+
+check_grid(int row, int col){
+	int s[2];
+	// loop for each possible number (1-9)
+	for(s[0]=1; s[0]<=SUDOKU_SIZE; s[0]++){
+		// count of s[0] occurences
+		s[1]=0;
+		// loop through each element of the grid
+		for(int i=row; i<=row+2; i++){
+			for(int j=col; j<=col+2; j++){
 				if(puzzle[i][j]==s[0]){
 					// increment # of occurences if s[0] is found
 					s[1]++;
@@ -167,11 +192,8 @@ void *check_grid(void *arg){
 		}
 		// check if s[0] has a valid number of occurences
 		if(s[1]!=1){
-			valid[(init->row/3)+init->column]=0;
-			return NULL;
+			return 0;
 		}
 	}
-	valid[(init->row/3)+init->column]=1;
-
-	return NULL;
+	return 1;
 }
