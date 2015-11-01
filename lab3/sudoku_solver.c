@@ -41,25 +41,25 @@ void* checkGrid(void* pos){
 
 	//P.S: I'M TYPING IN ALL CAPS SO YOU SEE IT
 
-	// int s[2];
-	// //Loop for each possible number (1-9)
-	// for(s[0]=1; s[0]<=SUDOKU_SIZE; s[0]++){
-	// 	//Count of s[0] occurences
-	// 	s[1]=0;
-	// 	//Loop through each element of the grid
-	// 	for(int i=row; i<=row+2; i++){
-	// 		for(int j=col; j<=col+2; j++){
-	// 			if(puzzle[i][j]==s[0]){
-	// 				//Increment # of occurences if s[0] is found
-	// 				s[1]++;
-	// 			}
-	// 		}
-	// 	}
-	// 	//Check if s[0] has a valid number of occurences
-	// 	if(s[1]>1){
-	// 		valid[2] = 0;
-	// 	}
-	// }
+	int s[2];
+	//Loop for each possible number (1-9)
+	for(s[0]=1; s[0]<=SUDOKU_SIZE; s[0]++){
+		//Count of s[0] occurences
+		s[1]=0;
+		//Loop through each element of the grid
+		for(int i=rowNum; i<=rowNum+2; i++){
+			for(int j=colNum; j<=colNum+2; j++){
+				if(puzzle[i][j]==s[0]){
+					//Increment # of occurences if s[0] is found
+					s[1]++;
+				}
+			}
+		}
+		//Check if s[0] has a valid number of occurences
+		if(s[1]>1){
+			valid[2] = 0;
+		}
+	}
 	valid[2] = 1;
 
 	return NULL;
@@ -164,7 +164,7 @@ void solvePuzzle(){
 			insertVal++;
 
 			//Insert a value into the position if it isn't a flag
-			if(flag[position.row][position.column] != 0)
+			if(flag[position.row][position.column] != 0){
 				puzzle[position.row][position.column] = insertVal; 				
 			} else{
 				//Skips over the value retaining movForw's value
