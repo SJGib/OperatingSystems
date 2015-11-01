@@ -152,33 +152,56 @@ void solvePuzzle(){
 	position.row = 0;
 	position.column = 0;
 	bool valid;
+	bool movForw = true;
+	int insertVal;
 
 	while(position.row < (SUDOKU_SIZE-1)){
 		
 		valid = false;
-		for(int insertVal = 1; insertVal < (SUDOKU_SIZE+1); insertVal++){
+		insertVal = puzzle[position.row][position.column];
+		while(insertVal < SUDOKU_SIZE){
+			
+			//Adds one to insertVal every iteration
+			//Adds one at start since insertVal needs to
+			//Skip over 0 or a previous val already inserted
+			insertVal++;
+
 			//Insert a value into the position
-			if(puzzle[position.row][position.column] == 0){	
-			//THIS CHECK WILL NOT WORK - NEED FLAGS FOR THE VALUES GIVEN TO US
-			//THIS CHECK WILL COMPLETELY BREAK THINGS BUT IS A PLACEHOLDER
-				puzzle[position.row][position.column] = insertVal;
-			}
+			//if(puzzle[position.row][position.column] != FLAG){				//----- NEED THIS LINE BUT NEED A FLAG INDICATOR
+				puzzle[position.row][position.column] = insertVal; 				//----- TO SHOW IF THE VALUE NEEDS TO BE CHECKED OR NOT
+			//} else{
+				//Skips over the value retaining movForw's value
+				//So it moves backward or forward
+			//	break;
+			//}
 
 			valid = checkValid(position);
 			if(valid == true){
+				movForw = true;
 				break;
 			}
 			if(valid == false && insertVal == SUDOKU_SIZE){
 				//Go back one in the position
+				movForw = false;
 			}
 		}
 
-		//Move forward if an insertion was done
-		if(position.column < (SUDOKU_SIZE-1)){
-			position.column++;
-		}else{
-			position.column = 0;
-			position.row++;
+		if(movForw == true){ //Move forward if an insertion was done
+			//If there are columns left, add one to columns
+			//Otherwise move down a row and set columns to 0
+			if(position.column < (SUDOKU_SIZE-1)){
+				position.column++;
+			}else{
+				position.column = 0;
+				position.row++;
+			}
+		} else{ //Move backwards if an insertion runs out of nums
+			if(position.column > 0){
+				position.column--;
+			}else{
+				position.column = (SUDOKU_SIZE-1);
+				position.row--;
+			}
 		}
 	}
 }
