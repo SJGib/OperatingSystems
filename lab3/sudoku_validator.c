@@ -31,7 +31,7 @@ int main(){
 	//segment checks
 	for(int i = 0; i < SUDOKU_SIZE; i++){
 		initials[i].row = (i%3)*3;
-		initials[i].column = (i/3)*3;`
+		initials[i].column = (i/3)*3;
 	}
 
 	//row check
@@ -54,10 +54,19 @@ int main(){
 	for(int i = 0; i < NUM_THREADS; i++){
 		pthread_join(pth[i], NULL);
 	}
-	
-	// for(int i = 0; i < NUM_THREADS; i++){
-	// 	printf("%d", valid[i]);
-	// }
+
+	//Outputs if the puzzle is valid or not
+	int validCheck = 0;
+	for(int i = 0; i < NUM_THREADS; i++){
+		if(valid[i] == 1){
+			validCheck++;
+		}
+	}
+	if(validCheck == NUM_THREADS){
+		printf("Puzzle is valid\n");
+	}else{
+		printf("Puzzle is not valid\n");
+	}
 }
 
 void init(){
