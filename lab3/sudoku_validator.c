@@ -11,6 +11,7 @@
 #define BUFFER_LEN 256
 
 int puzzle[SUDOKU_SIZE][SUDOKU_SIZE];
+int flag[SUDOKU_SIZE][SUDOKU_SIZE];
 int valid[NUM_THREADS] = {0};
 
 typedef struct{
@@ -88,6 +89,8 @@ void init(){
     		// assign elements in row to their places in puzzle
     		for(int col = 0; col < SUDOKU_SIZE; col++){
     			puzzle[i][col] = row[col];
+    			// flag initial puzzle values
+    			flag[i][col] = row[col]!=0;
     		}
     		i++;
 		}
@@ -137,7 +140,7 @@ int check_row(int row){
 				s[1]++;
 			}
 		}
-		if(s[1]!=1){
+		if(s[1]>1){
 			return 0;
 		}
 	}
@@ -168,7 +171,7 @@ int check_column(int col){
 				s[1]++;
 			}
 		}
-		if(s[1]!=1){\
+		if(s[1]>1){\
 			return 0;
 		}
 	}
@@ -188,7 +191,7 @@ void *check_all_grids(void *arg){
 	return NULL;
 }
 
-check_grid(int row, int col){
+int check_grid(int row, int col){
 	int s[2];
 	// loop for each possible number (1-9)
 	for(s[0]=1; s[0]<=SUDOKU_SIZE; s[0]++){
@@ -204,7 +207,7 @@ check_grid(int row, int col){
 			}
 		}
 		// check if s[0] has a valid number of occurences
-		if(s[1]!=1){
+		if(s[1]>1){
 			return 0;
 		}
 	}

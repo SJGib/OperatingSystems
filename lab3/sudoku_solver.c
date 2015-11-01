@@ -167,6 +167,7 @@ void solvePuzzle(){
 			insertVal++;
 
 			//Insert a value into the position
+			// (flag[position.row][position.column] != 0) ////////////// flag check
 			//if(puzzle[position.row][position.column] != FLAG){				//----- NEED THIS LINE BUT NEED A FLAG INDICATOR
 				puzzle[position.row][position.column] = insertVal; 				//----- TO SHOW IF THE VALUE NEEDS TO BE CHECKED OR NOT
 			//} else{
