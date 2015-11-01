@@ -31,7 +31,7 @@ int main(){
 	//segment checks
 	for(int i = 0; i < SUDOKU_SIZE; i++){
 		initials[i].row = (i%3)*3;
-		initials[i].column = (i/3)*3;
+		initials[i].column = (i/3)*3;`
 	}
 
 	//row check
@@ -54,6 +54,10 @@ int main(){
 	for(int i = 0; i < NUM_THREADS; i++){
 		pthread_join(pth[i], NULL);
 	}
+	
+	// for(int i = 0; i < NUM_THREADS; i++){
+	// 	printf("%d", valid[i]);
+	// }
 }
 
 void init(){
