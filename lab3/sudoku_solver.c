@@ -138,7 +138,7 @@ void solvePuzzle(){
 	bool movForw = true;
 	int insertVal;
 
-	while(position.row < (SUDOKU_SIZE-1)){
+	while(position.row < SUDOKU_SIZE){
 		
 		valid = false;
 		insertVal = puzzle[position.row][position.column];
@@ -150,8 +150,9 @@ void solvePuzzle(){
 			insertVal++;
 
 			//Insert a value into the position
-			if(flag[position.row][position.column] == 0){				//----- NEED THIS LINE BUT NEED A FLAG INDICATOR
-				puzzle[position.row][position.column] = insertVal; 				//----- TO SHOW IF THE VALUE NEEDS TO BE CHECKED OR NOT
+			//Only inserts if it's not a flag
+			if(flag[position.row][position.column] == 0){				
+				puzzle[position.row][position.column] = insertVal; 				
 			} else{
 				//Skips over the value retaining movForw's value
 				//So it moves backward or forward
@@ -159,6 +160,7 @@ void solvePuzzle(){
 			}
 
 			valid = checkValid(position);
+
 			if(valid == true){
 				movForw = true;
 				break;
