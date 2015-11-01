@@ -149,9 +149,9 @@ void solvePuzzle(){
 			//Skip over 0 or a previous val already inserted
 			insertVal++;
 
-			//Insert a value into the position
-			if(flag[position.row][position.column] != 0){				//----- NEED THIS LINE BUT NEED A FLAG INDICATOR
-				puzzle[position.row][position.column] = insertVal; 				//----- TO SHOW IF THE VALUE NEEDS TO BE CHECKED OR NOT
+			//Insert a value into the position if it isn't a flag
+			if(flag[position.row][position.column] != 0){
+				puzzle[position.row][position.column] = insertVal; 
 			} else{
 				//Skips over the value retaining movForw's value
 				//So it moves backward or forward
@@ -281,7 +281,12 @@ bool loadPuzzle(char* filename){
     		//Assigns elements in the row to their places in puzzle
     		for(int colNum = 0; colNum < SUDOKU_SIZE; colNum++){
     			puzzle[rowNum][colNum] = row[colNum];
+<<<<<<< HEAD
     			flag[rowNum][colNum] = row[colNum]!=0;
+=======
+    			//Make the flags
+    			flag[rowNum][colNum] = row[colNum] != 0;
+>>>>>>> c7067df40eb4d3b274fbcb2941b90df081c3ba89
     		}
     		rowNum++;
 		}
