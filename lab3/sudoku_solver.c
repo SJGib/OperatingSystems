@@ -281,12 +281,8 @@ bool loadPuzzle(char* filename){
     		//Assigns elements in the row to their places in puzzle
     		for(int colNum = 0; colNum < SUDOKU_SIZE; colNum++){
     			puzzle[rowNum][colNum] = row[colNum];
-<<<<<<< HEAD
-    			flag[rowNum][colNum] = row[colNum]!=0;
-=======
     			//Make the flags
     			flag[rowNum][colNum] = row[colNum] != 0;
->>>>>>> c7067df40eb4d3b274fbcb2941b90df081c3ba89
     		}
     		rowNum++;
 		}
