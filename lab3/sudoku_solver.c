@@ -12,6 +12,7 @@
 #define BUFFER_LEN 256
 
 int puzzle[SUDOKU_SIZE][SUDOKU_SIZE];
+int flag[SUDOKU_SIZE][SUDOKU_SIZE];
 int valid[NUM_THREADS] = {0};
 //valid[0] = row, valid[1] = column, valid[2] = grid
 
@@ -24,47 +25,29 @@ void* checkGrid(void* pos){
 	
 	parameters* position = (parameters*)pos;
 
-	int rowNum = position->row;
-	int colNum = position->column;
+	int row = position->row;
+	int col = position->column;
 
-
-	//JACK I NEED YOU TO FIX THIS PART SINCE IT DOESN'T WORK
-	//LIKE IT SHOULD. CAN YOU MAKE IT WORK FOR THE ABOVE
-	//INFORMATION I'VE GIVEN YOU? IT NEEDS TO CHECK THE GRID
-	//THAT IS BASED ON THE ROWNUM AND COLNUM I'VE GIVEN YOU
-	//ie. 0, 0 needs to check from 0-2 cols and 0-2 rows
-
-	//ALSO EVERY CHECK NEEDS TO IGNORES 0'S, CAN YOU PLEASE FIX THAT?
-	//IE. 5, 3, 0, 0, 7, 0, 0, 0 NEEDS TO IGNORE THE 0'S DURING THE CHECKS
-	//NOT SURE IF IT DOES SINCE I DIDN'T TEST IT
-
-	//P.S: I'M TYPING IN ALL CAPS SO YOU SEE IT
-
-
-
-
-
-	// int s[2];
-	// // loop for each possible number (1-9)
-	// for(s[0]=1; s[0]<=SUDOKU_SIZE; s[0]++){
-	// 	// count of s[0] occurences
-	// 	s[1]=0;
-	// 	// loop through each element of the grid
-	// 	for(int i=row; i<=row+2; i++){
-	// 		for(int j=col; j<=col+2; j++){
-	// 			if(puzzle[i][j]==s[0]){
-	// 				// increment # of occurences if s[0] is found
-	// 				s[1]++;
-	// 			}
-	// 		}
-	// 	}
-	// 	// check if s[0] has a valid number of occurences
-	// 	if(s[1]!=1){
-	// 		valid[2] = 0;
-	// 	}
-	// }
-	// valid[2] = 1;
-
+	int s[2];
+	// loop for each possible number (1-9)
+	for(s[0]=1; s[0]<=SUDOKU_SIZE; s[0]++){
+		// count of s[0] occurences
+		s[1]=0;
+	 	// loop through each element of the grid
+	 	for(int i=row; i<=row+2; i++){
+	 		for(int j=col; j<=col+2; j++){
+	 			if(puzzle[i][j]==s[0]){
+	 				// increment # of occurences if s[0] is found
+	 				s[1]++;
+	 			}
+	 		}
+	 	}
+	 	// check if s[0] has a valid number of occurences
+	 	if(s[1]>1){
+	 		valid[2] = 0;
+		}
+	}
+	valid[2] = 1;
 	return NULL;
 }
 
@@ -84,7 +67,7 @@ void* checkCol(void* col){
 			}
 		}
 		//Return 0 if not valid
-		if(s[1] != 1){
+		if(s[1] > 1){
 			valid[1] = 0;
 		}
 	}
@@ -109,7 +92,7 @@ void* checkRow(void* row){
 			}
 		}
 		//Return 0 if not valid
-		if(s[1]!=1){
+		if(s[1]>1){
 			valid[0] = 0;
 		}
 	}
@@ -167,14 +150,13 @@ void solvePuzzle(){
 			insertVal++;
 
 			//Insert a value into the position
-			// (flag[position.row][position.column] != 0) ////////////// flag check
-			//if(puzzle[position.row][position.column] != FLAG){				//----- NEED THIS LINE BUT NEED A FLAG INDICATOR
+			if(flag[position.row][position.column] != 0){				//----- NEED THIS LINE BUT NEED A FLAG INDICATOR
 				puzzle[position.row][position.column] = insertVal; 				//----- TO SHOW IF THE VALUE NEEDS TO BE CHECKED OR NOT
-			//} else{
+			} else{
 				//Skips over the value retaining movForw's value
 				//So it moves backward or forward
-			//	break;
-			//}
+				break;
+			}
 
 			valid = checkValid(position);
 			if(valid == true){
@@ -299,6 +281,7 @@ bool loadPuzzle(char* filename){
     		//Assigns elements in the row to their places in puzzle
     		for(int colNum = 0; colNum < SUDOKU_SIZE; colNum++){
     			puzzle[rowNum][colNum] = row[colNum];
+    			flag[rowNum][colNum] = row[colNum]!=0;
     		}
     		rowNum++;
 		}
