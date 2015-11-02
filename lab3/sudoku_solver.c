@@ -21,83 +21,143 @@ typedef struct{
 	int column;
 } parameters;
 
+void printPuzzle(){
+	//Prints a bar before the entire puzzle has been printed
+	printf("=========================\n");
+	//Loops through the rows
+	for(int rowNum = 0; rowNum < SUDOKU_SIZE; rowNum++){
+		//Loops through the columns
+		for(int colNum = 0; colNum < SUDOKU_SIZE; colNum++){
+			//If the element is at the end of the row, don't add a ","
+			//Else print normally
+			if(colNum == (SUDOKU_SIZE - 1)){
+				printf("%d", puzzle[rowNum][colNum]);
+			} else{
+				printf("%d, ", puzzle[rowNum][colNum]);
+			}	
+		}
+		//Prints an endline after all the columns in a row have been printed
+		printf("\n");
+	}
+	//Prints a bar after the entire puzzle has been printed
+	printf("=========================\n");
+}
+
 void* checkGrid(void* pos){
 	
 	parameters* position = (parameters*)pos;
+	int numOcc[SUDOKU_SIZE] = { 0 };
+	int rowNum = position->row;
+	int colNum = position->column;
+	int rowStart;
+	int colStart;
+	bool checkPass = true;
 
-	int row = position->row;
-	int col = position->column;
+	//Pick which 3x3 grid the position is in
+	//0-2 = 1, 3-5 = 2, 6-8 = 3
+	if(rowNum < 3){
+		rowStart = 0;
+	} else if(rowNum < 6){
+		rowStart = 3;
+	} else{
+		rowStart = 6;
+	}
 
-	int s[2];
-	// loop for each possible number (1-9)
-	for(s[0]=1; s[0]<=SUDOKU_SIZE; s[0]++){
-		// count of s[0] occurences
-		s[1]=0;
-	 	// loop through each element of the grid
-	 	for(int i=row; i<=row+2; i++){
-	 		for(int j=col; j<=col+2; j++){
-	 			if(puzzle[i][j]==s[0]){
-	 				// increment # of occurences if s[0] is found
-	 				s[1]++;
+	if(colNum < 3){
+		colStart = 0;
+	} else if(colNum < 6){
+		colStart = 3;
+	} else{
+		colStart = 6;
+	}
+
+	//Loop for each possible number (1-9)
+	for(int checkVal = 1; checkVal < (SUDOKU_SIZE+1); checkVal++){
+	 	//Loop through each element of the 3x3 grid
+	 	for(int i = rowStart; i < rowStart + 3; i++){
+	 		for(int j = colStart; j < colStart + 3; j++){
+	 			if(puzzle[i][j] == checkVal){
+	 				//Increment # of occurences if checkVal is found
+	 				numOcc[checkVal-1]++;
 	 			}
 	 		}
 	 	}
-	 	// check if s[0] has a valid number of occurences
-	 	if(s[1]>1){
-	 		valid[2] = 0;
-		}
 	}
-	valid[2] = 1;
+	//If the number of occurences of any value is
+	//greater than 1, than the check fails and the
+	//inputted value needs to be changed
+	for(int i = 0; i < SUDOKU_SIZE; i++){
+ 		if(numOcc[i] > 1){
+ 			checkPass = false;
+ 		}
+ 	}
+ 	if(checkPass == true){
+ 		valid[2] = 1;
+ 	} else{
+ 		valid[2] = 0;
+ 	}
 	return NULL;
 }
 
 void* checkCol(void* col){
 	
 	int* colNum = (int*)col;
+	int numOcc[SUDOKU_SIZE] = { 0 };
+	bool checkPass = true;
 
-	int s[2];
 	//Loop for each possible number (1-9)
-	for(s[0] = 1; s[0] <= SUDOKU_SIZE; s[0]++){
-		//Count of s[0] occurences
-		s[1] = 0;
+	for(int checkVal = 1; checkVal < (SUDOKU_SIZE+1); checkVal++){
 		//Loop through each element of the column
 		for(int rowNum = 0; rowNum < SUDOKU_SIZE; rowNum++){
-			if(puzzle[rowNum][*colNum] == s[0]){
-				s[1]++;
+			if(puzzle[rowNum][*colNum] == checkVal){
+				numOcc[checkVal-1]++;
 			}
 		}
-		//Return 0 if not valid
-		if(s[1] > 1){
-			valid[1] = 0;
-		}
 	}
-	//Return 1 if valid
-	valid[1] = 1;
+	//If the number of occurences of any value is
+	//greater than 1, than the check fails and the
+	//inputted value needs to be changed
+	for(int i = 0; i < SUDOKU_SIZE; i++){
+ 		if(numOcc[i] > 1){
+ 			checkPass = false;
+ 		}
+ 	}
+ 	if(checkPass == true){
+ 		valid[1] = 1;
+ 	} else{
+ 		valid[1] = 0;
+ 	}
 	return NULL;
 }
 
 void* checkRow(void* row){
 	
 	int* rowNum = (int*)row;
+	int numOcc[SUDOKU_SIZE] = { 0 };
+	bool checkPass = true;
 
-	int s[2];
 	//Loop for each possible number (1-9)
-	for(s[0]=1; s[0]<=SUDOKU_SIZE; s[0]++){
-		//Count of s[0] occurences
-		s[1]=0;
+	for(int checkVal = 1; checkVal < (SUDOKU_SIZE+1); checkVal++){
 		//Loop through each element of the row
 		for(int colNum = 0; colNum < SUDOKU_SIZE; colNum++){
-			if(puzzle[*rowNum][colNum]==s[0]){
-				s[1]++;
+			if(puzzle[*rowNum][colNum] == checkVal){
+				numOcc[checkVal-1]++;
 			}
 		}
-		//Return 0 if not valid
-		if(s[1]>1){
-			valid[0] = 0;
-		}
 	}
-	//Return 1 if valid
-	valid[0] = 1;
+	//If the number of occurences of any value is
+	//greater than 1, than the check fails and the
+	//inputted value needs to be changed
+	for(int i = 0; i < SUDOKU_SIZE; i++){
+ 		if(numOcc[i] > 1){
+ 			checkPass = false;
+ 		}
+ 	}
+ 	if(checkPass == true){
+ 		valid[0] = 1;
+ 	} else{
+ 		valid[0] = 0;
+ 	}
 	return NULL;
 }
 
@@ -168,6 +228,7 @@ void solvePuzzle(){
 			if(valid == false && insertVal == SUDOKU_SIZE){
 				//Go back one in the position
 				movForw = false;
+				puzzle[position.row][position.column] = 0;
 			}
 		}
 
@@ -177,6 +238,10 @@ void solvePuzzle(){
 			if(position.column < (SUDOKU_SIZE-1)){
 				position.column++;
 			}else{
+				
+				//printPuzzle();
+				//getchar();
+
 				position.column = 0;
 				position.row++;
 			}
@@ -189,52 +254,6 @@ void solvePuzzle(){
 			}
 		}
 	}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//EVERYTHING BELOW THIS POINT WORKS
-
-void printPuzzle(){
-	//Prints a bar before the entire puzzle has been printed
-	printf("=========================\n");
-	//Loops through the rows
-	for(int rowNum = 0; rowNum < SUDOKU_SIZE; rowNum++){
-		//Loops through the columns
-		for(int colNum = 0; colNum < SUDOKU_SIZE; colNum++){
-			//If the element is at the end of the row, don't add a ","
-			//Else print normally
-			if(colNum == (SUDOKU_SIZE - 1)){
-				printf("%d", puzzle[rowNum][colNum]);
-			} else{
-				printf("%d, ", puzzle[rowNum][colNum]);
-			}	
-		}
-		//Prints an endline after all the columns in a row have been printed
-		printf("\n");
-	}
-	//Prints a bar after the entire puzzle has been printed
-	printf("=========================\n");
 }
 
 void tokenize(char *line, int *array){
@@ -296,21 +315,21 @@ bool loadPuzzle(char* filename){
 int main(){
 
 	//Allows for this to be easily changed into user input if needed
-	char* filename = "puzzle.txt";
+	char* filename = "puzzle1.txt";
 
 	//Loads the puzzle from the file into the global puzzle array
 	//If the load is successful, the rest of the code is executed
 	if(loadPuzzle(filename)){
 
+		printf("Unsolved Puzzle\n");
+
 		//Prints the unsolved puzzle
 		printPuzzle();
 
-		//Indicates when the solver starts		------ REMOVE AFTER TESTING
-		printf("Starting Solver\n");
 		//Solves the puzzle
 		solvePuzzle();
-		//Indicates when the solver finishes	------ REMOVE AFTER TESTING
-		printf("Finished Solver\n");
+
+		printf("Solved Puzzle\n");
 
 		//Prints the solved puzzle
 		printPuzzle();
