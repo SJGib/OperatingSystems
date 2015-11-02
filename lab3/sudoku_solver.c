@@ -28,8 +28,8 @@ void writePuzzle(){
 	for(int rowNum = 0; rowNum < SUDOKU_SIZE; rowNum++){
 		//Loops through the columns
 		for(int colNum = 0; colNum < SUDOKU_SIZE; colNum++){
-			//If the element is at the end of the row, don't add a ","
-			//Else print normally
+			//Prints the elements to file with a space between each element
+			//If it's the end of the line, don't add a space
 			if(colNum == (SUDOKU_SIZE - 1)){
 				fprintf(file, "%d", puzzle[rowNum][colNum]);
 			} else{
