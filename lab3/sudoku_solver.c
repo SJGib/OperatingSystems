@@ -186,6 +186,11 @@ bool checkValid(parameters position){
 	//Create three threads. One for row, one for column, one for grid
 	pthread_t pth[NUM_THREADS];
 
+	//Reset valid to 0 before a check
+	for(int i = 0; i < NUM_THREADS; i++){
+		valid[i] = 0;
+	}
+
 	//Check if the row, column and 3x3 grid are valid
 	//This check will be based on the index of the current position
 	pthread_create(&pth[0], 0, checkRow, (void *)&position.row);
