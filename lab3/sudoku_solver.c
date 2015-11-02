@@ -238,7 +238,7 @@ void solvePuzzle(){
 				puzzle[position.row][position.column] = 0;
 			}
 		}
-
+		
 		if(movForw == true){ //Move forward if an insertion was done
 			//If there are columns left, add one to columns
 			//Otherwise move down a row and set columns to 0
@@ -247,11 +247,13 @@ void solvePuzzle(){
 			}else{
 				position.column = 0;
 				position.row++;
-
-				// printPuzzle();
-				// getchar();
 			}
 		} else{ //Move backwards if an insertion runs out of nums
+
+			//Boundary case if it needs to move back when a val is 9
+			if(insertVal == SUDOKU_SIZE && (flag[position.row][position.column] == 0)){
+				puzzle[position.row][position.column] = 0;
+			}
 
 			if(position.column > 0){
 				position.column--;
