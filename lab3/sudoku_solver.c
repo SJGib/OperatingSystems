@@ -207,9 +207,7 @@ void solvePuzzle(){
 
 		//GOES INFINITE BECAUSE IT DOESN'T TREAT 9 PROPERLY
 
-
 		while(insertVal < SUDOKU_SIZE){
-			
 			//Adds one to insertVal every iteration
 			//Adds one at start since insertVal needs to
 			//Skip over 0 or a previous val already inserted
@@ -254,6 +252,7 @@ void solvePuzzle(){
 				// getchar();
 			}
 		} else{ //Move backwards if an insertion runs out of nums
+
 			if(position.column > 0){
 				position.column--;
 			}else{
