@@ -21,6 +21,27 @@ typedef struct{
 	int column;
 } parameters;
 
+void writePuzzle(){
+	
+	FILE* file = fopen("solution.txt", "w");
+
+	for(int rowNum = 0; rowNum < SUDOKU_SIZE; rowNum++){
+		//Loops through the columns
+		for(int colNum = 0; colNum < SUDOKU_SIZE; colNum++){
+			//If the element is at the end of the row, don't add a ","
+			//Else print normally
+			if(colNum == (SUDOKU_SIZE - 1)){
+				fprintf(file, "%d", puzzle[rowNum][colNum]);
+			} else{
+				fprintf(file, "%d ", puzzle[rowNum][colNum]);
+			}	
+		}
+		//Prints an endline after all the columns in a row have been printed
+		fprintf(file, "\n");
+	}
+	fclose(file);
+}
+
 void printPuzzle(){
 	//Prints a bar before the entire puzzle has been printed
 	printf("=========================\n");
@@ -203,10 +224,6 @@ void solvePuzzle(){
 		valid = false;
 		insertVal = puzzle[position.row][position.column];
 
-
-
-		//GOES INFINITE BECAUSE IT DOESN'T TREAT 9 PROPERLY
-
 		while(insertVal < SUDOKU_SIZE){
 			//Adds one to insertVal every iteration
 			//Adds one at start since insertVal needs to
@@ -338,5 +355,7 @@ int main(){
 		printf("Solved Puzzle\n");
 		//Prints the solved puzzle
 		printPuzzle();
+		//Writes the puzzle to file
+		writePuzzle();
 	}
 }
