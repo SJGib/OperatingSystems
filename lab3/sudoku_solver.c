@@ -300,7 +300,6 @@ void tokenize(char *line, int *array){
 }
 
 bool loadPuzzle(char* filename){
-
 	//Opens the file in read mode
 	FILE *fp;
 	fp = fopen(filename, "r");
