@@ -202,6 +202,12 @@ void solvePuzzle(){
 		
 		valid = false;
 		insertVal = puzzle[position.row][position.column];
+
+
+
+		//GOES INFINITE BECAUSE IT DOESN'T TREAT 9 PROPERLY
+
+
 		while(insertVal < SUDOKU_SIZE){
 			
 			//Adds one to insertVal every iteration
@@ -228,6 +234,9 @@ void solvePuzzle(){
 			if(valid == false && insertVal == SUDOKU_SIZE){
 				//Go back one in the position
 				movForw = false;
+				//Changes the position's value to 0 knowing that the input
+				//value in it is wrong so the previous elements are not
+				//affected during the checks
 				puzzle[position.row][position.column] = 0;
 			}
 		}
@@ -240,6 +249,9 @@ void solvePuzzle(){
 			}else{
 				position.column = 0;
 				position.row++;
+
+				// printPuzzle();
+				// getchar();
 			}
 		} else{ //Move backwards if an insertion runs out of nums
 			if(position.column > 0){
@@ -311,7 +323,7 @@ bool loadPuzzle(char* filename){
 int main(){
 
 	//Allows for this to be easily changed into user input if needed
-	char* filename = "puzzle1.txt";
+	char* filename = "puzzle.txt";
 
 	//Loads the puzzle from the file into the global puzzle array
 	//If the load is successful, the rest of the code is executed
