@@ -238,10 +238,6 @@ void solvePuzzle(){
 			if(position.column < (SUDOKU_SIZE-1)){
 				position.column++;
 			}else{
-				
-				//printPuzzle();
-				//getchar();
-
 				position.column = 0;
 				position.row++;
 			}
@@ -322,15 +318,11 @@ int main(){
 	if(loadPuzzle(filename)){
 
 		printf("Unsolved Puzzle\n");
-
 		//Prints the unsolved puzzle
 		printPuzzle();
-
 		//Solves the puzzle
 		solvePuzzle();
-
 		printf("Solved Puzzle\n");
-
 		//Prints the solved puzzle
 		printPuzzle();
 	}
