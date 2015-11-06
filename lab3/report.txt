@@ -3,3 +3,10 @@ Dennis Pacewicz, 100524231
 Stewart Gibson, 100514556
 Truyen Truong, 100516976
 
+A brief report explaining your design and implementation of the threading for solving the sudoku problem.
+
+The unsolved puzzle uses 0s to represent a value that is needed to be inserted. Due to this, the algorithm for solving the sudoku puzzle first starts by checking which values are 0 and which are not. If they are 0 then the positions are flagged so they can be skipped over during the insertions. During the insertions, a value is picked starting at 0 and inserted into an unflagged position. Immediately after the insertion, three threads are used to check the row the insertion was done in, the column the insertion was done in, and the 3x3 grid the insertion was done in to see if the inserted value is valid. If any of the threaded validation checks fail then the overall insertion is a failure. If the insertion is valid then the position is increased by one, if not then the inserted value is increased by 1. If the inserted value reaches 9 and is still not valid, that indicates that one of the previous inserted values is incorrect and must move backwards (before moving backwards, the current inserted value is changed back to 0 as to not invalidate future checks). Upon moving backwards, it will add one again to the previously inserted value until it is valid or it is invalidated again. This is done repeatably until the problem is solved.
+
+The validator runs 11 threads; 1 to check the columns, 1 to check the rows, and 1 for each of the 9 grids. Both the column and row threads are not passed any values while the grid threads are passed the starting position for the grid they are checking. Each of these threads changes a value of the 'valid' array (hard coded for each) to 0 (invalid) or 1 (valid) if their part of the sudoku is valid. Once the threads are all finished the main then checks if all elements of valid are 1, print to terminal that the sudoku is valid, or 0, print to terminal that the sudoku is invalid.
+
+The validator is run after the solver is finished.
