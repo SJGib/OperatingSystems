@@ -19,16 +19,26 @@
 
 // Put macros or constants here using #define
 #define MEMORY 1024
+#define 
 
 // Put global environment variables here
+int time = 0;
 
 // Define functions declared in hostd.h here
 
 int main(int argc, char *argv[])
 {
+    // dispatch queue head and tail
+    node_t *dispatch_head = NULL;
+    node_t *dispatch_tail = NULL;
+    // queue heads and tails
+    node_t *heads[4] = {NULL};
+    node_t *tails[4] = {NULL};
+
     // ==================== YOUR CODE HERE ==================== //
     
     // Load the dispatchlist
+    /*load(dispatch_tail, dispatch_head);*/
     
     // Add each process structure instance to the job dispatch list queue
 
@@ -44,4 +54,23 @@ int main(int argc, char *argv[])
     // Repeat until all processes have been executed, all queues are empty
      
     return EXIT_SUCCESS;
+}
+
+void load(node_t *tail, node_t *head){
+    /*FILE *fp = fopen("dispatchlist","r");
+    if(fp==NULL){
+        perror("Could not open file.\n");
+        exit(0);
+    }
+
+    char *line = calloc(sizeof(char)*256);
+    while(getline(line,256,fp) != -1){
+        push(tail, load_dispatch(line));
+
+        if(head==NULL){
+            head = tail;
+        }
+    }
+
+    fclose(fp);*/
 }
