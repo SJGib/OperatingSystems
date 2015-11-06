@@ -71,7 +71,7 @@ int main(){
 
 void init(){
 	FILE *fp;
-	fp = fopen("solved_puzzle.txt", "r");
+	fp = fopen("solution.txt", "r");
 	// row #
 	int i = 0;
 
@@ -114,8 +114,10 @@ void tokenize(char *line, int *array){
 }
 
 void *check_all_rows(void *arg){
+	parameters rowCol = (parameters *) arg;
+	int j = rowCol->row;
 	// loop through each row
-	for(int j=0; j<SUDOKU_SIZE; j++){
+	for(j=0; j<SUDOKU_SIZE; j++){
 		if(check_row(j)!=1){
 			valid[9] = 0;
 			return NULL;
@@ -145,8 +147,10 @@ int check_row(int row){
 }
 
 void *check_all_columns(void *arg){
+	parameters rowCol = (parameters *)arg;
+	int j = rowCol->column;
 	// loop through each column
-	for(int j=0; j<SUDOKU_SIZE; j++){
+	for(j=0; j<SUDOKU_SIZE; j++){
 		if(check_column(j)!=1){
 			valid[10] = 0;
 			return NULL;
@@ -175,17 +179,16 @@ int check_column(int col){
 	return 1;
 }
 
-void *check_all_grids(void *arg){
+void *check_grid_thread(void *arg){
+	parameters rowCol = (parameters *) arg;
 	// loop through grids
-	for(int i=0; i<SUDOKU_SIZE; i++){
-		if(check_grid((i%3)*3,(i/3)*3)!=1){
-			valid[i] = 0;
-			return NULL;
-		} else {
-			valid[i]=1;
-		}
+	if(check_grid(rowCol->row,rowCol->column)!=1){
+		valid[rowCol->row/3 + rowCol->column] = 0;
+		return NULL;
+	} else {
+		valid[rowCol->row/3 + rowCol->column] = 1;
+		return NULL;
 	}
-	return NULL;
 }
 
 int check_grid(int row, int col){
