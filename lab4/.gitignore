@@ -1,0 +1,6 @@
+hostd.o
+process
+utility.o
+hostd
+queue.o
+sigtrap.o
