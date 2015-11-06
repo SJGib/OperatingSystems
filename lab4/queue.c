@@ -21,8 +21,10 @@ node_t *push(node_t *tail, proc process){
 	// initiate the value of next to NULL
 	new_node->next = NULL;
 
-	// add the new node to the queue
-	tail->next = new_node;
+	if(tail!=NULL){
+		// add the new node to the queue
+		tail->next = new_node;
+	}
 	// assign tail to the new node
 	tail = new_node;
 
