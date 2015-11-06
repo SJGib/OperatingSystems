@@ -2,9 +2,9 @@ CC = clang
 CFLAGS = -Wall -Wextra -std=c99 -pthread
 LFLAGS = 
 LIBS = -lm
-SOURCES = sudoku_validator.c sudoku_solver.c
+SOURCES = 
 OBJECTS = $(subst .c,.o,$(SOURCES))
-EXE = sudoku_validator.exe sudoku_solver.exe
+EXE = 
 .PHONY: clean help
 
 %.exe : %.o
