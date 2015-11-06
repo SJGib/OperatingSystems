@@ -14,7 +14,7 @@
 
 node_t *push(node_t *tail, proc process){
 	// creates new node_t to push onto the queue
-	node_t *new_node = (node_t *) malloc(SizeOf(node_t));
+	node_t *new_node = (node_t *) malloc(sizeof(node_t));
 
 	// assign the process to the new node
 	new_node->process = process;
