@@ -44,7 +44,7 @@ int main(){
 
 	//start segment checks
 	for(int i = 0; i < 9; i++){
-		pthread_create(&pth[i], 0, check_all_grids, (void *)&initials[i]);
+		pthread_create(&pth[i], 0, check_grid_thread, (void *)&initials[i]);
 	}
 	pthread_create(&pth[9], 0, check_all_rows, (void *)&initials[9]);
 	pthread_create(&pth[10], 0, check_all_columns, (void *)&initials[10]);
@@ -114,7 +114,7 @@ void tokenize(char *line, int *array){
 }
 
 void *check_all_rows(void *arg){
-	parameters rowCol = (parameters *) arg;
+	parameters* rowCol = (parameters *) arg;
 	int j = rowCol->row;
 	// loop through each row
 	for(j=0; j<SUDOKU_SIZE; j++){
@@ -147,7 +147,7 @@ int check_row(int row){
 }
 
 void *check_all_columns(void *arg){
-	parameters rowCol = (parameters *)arg;
+	parameters* rowCol = (parameters *)arg;
 	int j = rowCol->column;
 	// loop through each column
 	for(j=0; j<SUDOKU_SIZE; j++){
@@ -180,7 +180,7 @@ int check_column(int col){
 }
 
 void *check_grid_thread(void *arg){
-	parameters rowCol = (parameters *) arg;
+	parameters* rowCol = (parameters *) arg;
 	// loop through grids
 	if(check_grid(rowCol->row,rowCol->column)!=1){
 		valid[rowCol->row/3 + rowCol->column] = 0;
