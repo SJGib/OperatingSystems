@@ -71,7 +71,7 @@ int main(){
 
 void init(){
 	FILE *fp;
-	fp = fopen("solved_puzzle.txt", "r");
+	fp = fopen("solution.txt", "r");
 	// row #
 	int i = 0;
 
