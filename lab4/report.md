@@ -1,4 +1,4 @@
-###Report
+##Report
 
 **4 process queues:**   
 * realtime queue = First come, first serve
@@ -11,4 +11,29 @@ Memory will only be allocated if there is enough space to contain the data conti
 
 **dispatchlist format**
 Arrival, Priority, Runtime, Memory Needed, Printers,  Scanner, Modem, CD Drives
+
+###functions
+
+**void load()**
+take the file and actually load it into memory, load it into an array of structs.
+
+**void priority_schedule()**
+put the process data into its appropriate queue based on each process's priority. 
+
+**void ready_execute()**
+run realtime queue process until it finishes.
+
+**void execute(int queue)**
+run queue process for 1 second; increment (lower) the priority of the process if the process doesn't finish in time. call priority_schedule() to reassign the priority.
+
+**void allocate(int memsize, proc process)**
+allocate memory for process
+
+**void deallocate(proc process)**
+deallocate memory for process
+
+**void allocate_res(int memsize)**
+allocate memory for resource
+
+
 
