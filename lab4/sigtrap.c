@@ -1,5 +1,5 @@
 /* 
-  OS Exercises - project 2
+  Host Dispatcher Shell Project for SOFE 3950U / CSCI 3020U: Operating Systems
 
   sigtrap - report system signals applied to process
   
