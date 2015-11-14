@@ -5,6 +5,9 @@
  * All rights reserved.
  * 
  */
+
+#define _GNU_SOURCE
+
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -19,14 +22,13 @@
 
 // Put macros or constants here using #define
 #define MEMORY 1024
-#define 
 
 // Put global environment variables here
 int time = 0;
 
 // Define functions declared in hostd.h here
 
-int main(int argc, char *argv[])
+int main(void)
 {
     // dispatch queue head and tail
     node_t *dispatch_head = NULL;
@@ -35,15 +37,26 @@ int main(int argc, char *argv[])
     node_t *heads[4] = {NULL};
     node_t *tails[4] = {NULL};
 
-    // ==================== YOUR CODE HERE ==================== //
-    
     // Load the dispatchlist
-    /*load(dispatch_tail, dispatch_head);*/
-    
     // Add each process structure instance to the job dispatch list queue
-
+    load(&dispatch_tail, &dispatch_head);
+    
     // Iterate through each item in the job dispatch list, add each process
     // to the appropriate queues
+    proc process;
+    int priority;
+    while(dispatch_head != NULL){
+    	// retrieve process
+    	process = pop(&dispatch_head, &dispatch_tail);
+    	// retrieve priority of the process
+    	priority = process.details[1];
+    	// push process onto queue with matching priority
+    	push(&(tails[priority]), process);
+    	// queue with 1 node
+    	if(heads[priority]==NULL){
+    		heads[priority] = tails[priority];
+    	}
+    }
 
     // Allocate the resources for each process before it's executed
 
@@ -56,21 +69,30 @@ int main(int argc, char *argv[])
     return EXIT_SUCCESS;
 }
 
-void load(node_t *tail, node_t *head){
-    /*FILE *fp = fopen("dispatchlist","r");
+void load(node_t **tail, node_t **head){
+	size_t str_length = 256;
+	// open file
+    FILE *fp = fopen("dispatchlist","r");
     if(fp==NULL){
         perror("Could not open file.\n");
         exit(0);
     }
 
-    char *line = calloc(sizeof(char)*256);
-    while(getline(line,256,fp) != -1){
+    // allocate memory for line
+    char *line = calloc(str_length+1, sizeof(char));
+    // loop through lines in file
+    while(getline(&line,&str_length,fp) != -1){
+		// push process onto queue
         push(tail, load_dispatch(line));
 
-        if(head==NULL){
-            head = tail;
+        // from empty queue to queue with only one element
+        if(*head==NULL){
+            *head = *tail;
         }
     }
 
-    fclose(fp);*/
+    // free memory used by line
+    free(line);
+
+    fclose(fp);
 }

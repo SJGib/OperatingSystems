@@ -14,6 +14,6 @@
 // extern keyword such as in the following example:
 // extern void print_process(proc process);
 
-extern void load(node_t *tail, node_t *head);
+extern void load(node_t **tail, node_t **head);
 
 #endif /* HOSTD_H_ */
