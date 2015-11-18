@@ -60,7 +60,7 @@ int main(void)
 	    				pid_t pid = -1;
 	    				if(!process.waiting){
 	    					kill(process.pid, SIGCONT);
-	    					printf("%d\n", process.pid);
+	    					//printf("%d\n", process.pid);
 	    					pid = process.pid;
 	    				} else {
 	    					process.waiting = 0;
@@ -104,6 +104,7 @@ int main(void)
 	    							if(res->has_cdDrive[1]==process.pid){
 	    								res->has_cdDrive[1]=pid;
 	    							}
+	    							process.pid = pid;
 	    						}
 	    					} else {
 	    						sleep(process.details[2]);
