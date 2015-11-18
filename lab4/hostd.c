@@ -57,29 +57,30 @@ int main(void)
     			if(process.details[0]<=time){
 	    			// Allocate the resources for each process before it's executed
 	    			if(alloc_res(res, &process)){
-	    				pid_t pid;
+	    				pid_t pid = -1;
 	    				if(!process.waiting){
 	    					kill(process.pid, SIGCONT);
+	    					printf("%d\n", process.pid);
 	    					pid = process.pid;
 	    				} else {
 	    					process.waiting = 0;
 	    					// Execute the process binary using fork and exec
-	    					pid = fork();
-	    					if(pid == -1){
+	    					pid = fork() + 2;
+	    					if(pid == 1){
 	    						perror("fork");
 								exit(1);
-	    					} else if(pid == 0){
+	    					} else if(pid == 2){
 	    						// run process
 	    						system("./process");
 	    						exit(0);
 	    					}
 	    				}
-	    				if(pid>0){
-	    					pid += 2;
+	    				if(pid>2){
 	    					// wait 1 second or until finished
 	    					if(priority>0){
 	    						sleep(1);
 	    						process.details[2]--;
+	    						time++;
 	    						// Perform the appropriate signal handling
 	    						kill(pid, SIGTSTP);
 	    						waitpid(pid,0,0);
@@ -106,11 +107,11 @@ int main(void)
 	    						}
 	    					} else {
 	    						sleep(process.details[2]);
+	    						time+= process.details[2];
 	    						process.details[2] = 0;
 	    						// Perform the appropriate signal handling
 	    						kill(pid, SIGINT);
 	    					}
-	    					time++;
 	    				}
 	    				if(process.details[2]>0){
 	    					// push to next highest priority queue
@@ -139,7 +140,6 @@ int main(void)
     		}
     		res_taken_pid = -1;
     	}
-    	time++;
     } // End repeat
 
     free(res);
