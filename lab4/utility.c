@@ -8,42 +8,44 @@
 #include "utility.h"
 
 #define MEMORY 1024
+#define RESERVED 64
 
 // Define your utility functions here, you will likely need to add more...
 
-int alloc_mem(resources *res, int size)
+int alloc_mem(resources *res, int size, int priority)
 {
 	int startIndex = -1;
-	int endIndex = -1;
-	int currCounter = 0;
+	int allocated = 0;
+	int memoryAllowed = MEMORY-RESERVED;
 
-	for (int i=0; i<MEMORY-64; i++) {
+	if(priority == 0){
+		memoryAllowed = MEMORY;
+	}
 
-		// Issues the start index.
-		if (currCounter == 0) {
+	for (int i=0; i < memoryAllowed; i++) {
+
+		allocated = 0;
+
+		if(res->memory[i] == 0){
 			startIndex = i;
 		}
+		if((i + size) < memoryAllowed && startIndex != -1){
+			for(i = startIndex; i < size + startIndex; i++){
+				if(res->memory[i] == 1){
+					allocated = 1;
+					break;
+				}
+			}
+			if(allocated == 0){
 
-		if (res->memory[i] != 0) { // Increases counter if empty.
-			currCounter++;
-		} else { // Restarts counter if not empty.
-			currCounter = 0;
-		}
-
-		// Marks end index when enough memory to allocate.
-		if (currCounter == size) {
-			endIndex = i;
-		}
-	}
-
-	// Sets all memory spots to 1 if there is enough memory spots.
-	if (endIndex != -1) {
-		for (int j=startIndex; j<endIndex+1; j++) {
-			res->memory[j] = 1;
+				for(i = startIndex; i < size + startIndex; i++){
+					res->memory[i] = 1;
+				}
+				return startIndex;
+			}
 		}
 	}
-
-	return startIndex;
+	return -1;
 }
 
 void free_mem(resources *res, int index, int size)
@@ -72,9 +74,13 @@ bool alloc_res(resources *res, proc *process){
 	if((process->details[7] + res->cdDrive[0] + res->cdDrive[1])>2){
 		return 0;
 	}
-	if((process->addressIndex = alloc_mem(res, process->details[3]))==(-1)){
+	if((process->addressIndex = alloc_mem(res, process->details[3], process->details[1]))==(-1)){
 		return 0;
 	}
+	for(int i = 0; i < MEMORY; i++){
+		printf("%d ", res->memory[i]);
+	}
+	printf("\n%d\n", process->details[3]);
 	for(int i=0; i<2; i++){
 		if(res->printer[i]!=1){
 			res->printer[i] = 1;
@@ -101,10 +107,6 @@ bool alloc_res(resources *res, proc *process){
 			}
 		}
 	}
-for(int j=0;j<MEMORY;j++){
-   	printf("%d",res->memory[j]);
-}
-printf("\n");
 	return 1;
 }
 
