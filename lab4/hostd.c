@@ -60,7 +60,7 @@ int main(void)
 	    				pid_t pid = -1;
 	    				if(!process.waiting){
 	    					kill(process.pid, SIGCONT);
-	    					//printf("%d\n", process.pid);
+	    					waitpid(process.pid,0,0);
 	    					pid = process.pid;
 	    				} else {
 	    					process.waiting = 0;
@@ -82,7 +82,7 @@ int main(void)
 	    						process.details[2]--;
 	    						time++;
 	    						if(process.details[2]>0){
-		    						// Perform the appropriate signal handling
+		    						// Perform the appropriate `nal handling
 		    						kill(pid, SIGTSTP);
 		    					} else {
 		    						kill(pid, SIGINT);
@@ -116,6 +116,7 @@ int main(void)
 	    						process.details[2] = 0;
 	    						// Perform the appropriate signal handling
 	    						kill(pid, SIGINT);
+	    						waitpid(pid,0,0);
 	    					}
 	    				}
 	    				if(process.details[2]>0){
