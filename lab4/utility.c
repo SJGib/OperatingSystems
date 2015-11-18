@@ -59,7 +59,8 @@ void free_mem(resources *res, int index, int size)
 bool alloc_res(resources *res, proc *process){
 	if(res->has_printer[0]==process->pid || res->has_printer[1]==process->pid ||
 		res->has_scanner==process->pid || res->has_modem==process->pid ||
-		res->has_cdDrive[0]==process->pid || res->has_cdDrive[1]==process->pid){
+		res->has_cdDrive[0]==process->pid || res->has_cdDrive[1]==process->pid ||
+		process->addressIndex!=-1){
 		return 1;
 	}
 	if((process->details[4] + res->printer[0] + res->printer[1])>2){
@@ -77,10 +78,6 @@ bool alloc_res(resources *res, proc *process){
 	if((process->addressIndex = alloc_mem(res, process->details[3], process->details[1]))==(-1)){
 		return 0;
 	}
-	for(int i = 0; i < MEMORY; i++){
-		printf("%d ", res->memory[i]);
-	}
-	printf("\n%d\n", process->details[3]);
 	for(int i=0; i<2; i++){
 		if(res->printer[i]!=1){
 			res->printer[i] = 1;
