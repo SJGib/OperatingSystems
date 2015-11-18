@@ -81,8 +81,12 @@ int main(void)
 	    						sleep(1);
 	    						process.details[2]--;
 	    						time++;
-	    						// Perform the appropriate signal handling
-	    						kill(pid, SIGTSTP);
+	    						if(process.details[2]>0){
+		    						// Perform the appropriate signal handling
+		    						kill(pid, SIGTSTP);
+		    					} else {
+		    						kill(pid, SIGINT);
+		    					}
 	    						waitpid(pid,0,0);
 	    						// set process pid + res->has_x to pid+2
 	    						if(process.pid!=pid){
