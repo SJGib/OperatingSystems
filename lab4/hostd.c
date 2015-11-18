@@ -45,59 +45,99 @@ int main(void)
     }
 
     int time = 0;
+    // pid of first process for which there are not enough available resources
+    int res_taken_pid = -1;
     // Repeat until all processes have been executed, all queues are empty
     while(heads[0]!=NULL || heads[1]!=NULL
     	|| heads[2]!=NULL || heads[3]!=NULL){
     	for(priority=0; priority<4; priority++){
     		while(heads[priority]!=NULL && 
-    			heads[priority]->process.details[0]<=time){
+    			res_taken_pid!=heads[priority]->process.pid){
     			process = pop(&(heads[priority]), &(tails[priority]));
-    			// Allocate the resources for each process before it's executed
-    			if((process.addressIndex = alloc_mem(res, process.details[3]))!=(-1) && 
-    				(alloc_res(res, &process))){
-    				// Execute the process binary using fork and exec
-    				pid_t pid = fork();
-    				if(pid == -1){
-    					perror("fork");
-						exit(1);
-    				} else if(pid == 0){
-    					// run process
-    					system("./process");
-    					exit(0);
-    				} else {
-    					// wait 1 second or until finished
-    					if(priority>0){
-    						sleep(1);
-    						process.details[2]--;
-    					} else {
-    						sleep(process.details[2]);
-    						process.details[2] = 0;
-    					}
-    					time++;
-    					// Perform the appropriate signal handling
-    					kill(pid+2, SIGKILL);
-    				}
-    			} else {
-    				if(priority<3){
-	    				push(&(heads[priority+1]), &(tails[priority+1]), process);
-    				} else {
-    					push(&(heads[priority]), &(tails[priority]), process);
-    				}
-    				break;
-    			}
-    			if(process.details[2]>0){
-    				// push to next highest priority queue
-    				if(priority<3){
-	    				push(&(heads[priority+1]), &(tails[priority+1]), process);
-    				} else {
-    					push(&(heads[priority]), &(tails[priority]), process);
-    				}
-    			} else {
-    				// resource de-alloaction
-    				free_res(res, process);
-    				free_mem(res, process.addressIndex, process.details[3]);
-    			}
+    			if(process.details[0]<=time){
+	    			// Allocate the resources for each process before it's executed
+	    			if(alloc_res(res, &process)){
+	    				pid_t pid;
+	    				if(!process.waiting){
+	    					kill(process.pid, SIGCONT);
+	    					pid = process.pid;
+	    				} else {
+	    					process.waiting = 0;
+	    					// Execute the process binary using fork and exec
+	    					pid = fork();
+	    					if(pid == -1){
+	    						perror("fork");
+								exit(1);
+	    					} else if(pid == 0){
+	    						// run process
+	    						system("./process");
+	    						exit(0);
+	    					}
+	    				}
+	    				if(pid>0){
+	    					pid += 2;
+	    					// wait 1 second or until finished
+	    					if(priority>0){
+	    						sleep(1);
+	    						process.details[2]--;
+	    						// Perform the appropriate signal handling
+	    						kill(pid, SIGTSTP);
+	    						waitpid(pid,0,0);
+	    						// set process pid + res->has_x to pid+2
+	    						if(process.pid!=pid){
+	    							if(res->has_printer[0]==process.pid){
+	    								res->has_printer[0]=pid;
+	    							}
+	    							if(res->has_printer[1]==process.pid){
+	    								res->has_printer[1]=pid;
+	    							}
+	    							if(res->has_scanner==process.pid){
+	    								res->has_scanner=pid;
+	    							}
+	    							if(res->has_modem==process.pid){
+	    								res->has_modem=pid;
+	    							}
+	    							if(res->has_cdDrive[0]==process.pid){
+	    								res->has_cdDrive[0]=pid;
+	    							}
+	    							if(res->has_cdDrive[1]==process.pid){
+	    								res->has_cdDrive[1]=pid;
+	    							}
+	    						}
+	    					} else {
+	    						sleep(process.details[2]);
+	    						process.details[2] = 0;
+	    						// Perform the appropriate signal handling
+	    						kill(pid, SIGINT);
+	    					}
+	    					time++;
+	    				}
+	    				if(process.details[2]>0){
+	    					// push to next highest priority queue
+	    					if(priority<3){
+		    					push(&(heads[priority+1]), &(tails[priority+1]), process);
+	    					} else {
+	    						push(&(heads[priority]), &(tails[priority]), process);
+	    					}
+	    				} else {
+	    					// resource de-alloaction
+	    					free_res(res, process);
+	    					free_mem(res, process.addressIndex, process.details[3]);
+	    				}
+	    			} else {
+	    				if(res_taken_pid<0){
+		    				res_taken_pid = process.pid;
+	    				}
+	    				push(&(heads[priority]), &(tails[priority]), process);
+	    			}
+	    		} else {
+	    			push(&(heads[priority]), &(tails[priority]), process);
+	    			if(res_taken_pid<0){
+	    				res_taken_pid = process.pid;
+	    			}
+	    		}
     		}
+    		res_taken_pid = -1;
     	}
     	time++;
     } // End repeat

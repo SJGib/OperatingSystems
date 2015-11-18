@@ -35,6 +35,7 @@ typedef struct {
 // where in the resources memory array its memory was allocated
 typedef struct {
 	int pid;
+	bool waiting;
 	int details[8];
 	int addressIndex;
 } proc;

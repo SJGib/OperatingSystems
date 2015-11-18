@@ -72,6 +72,9 @@ bool alloc_res(resources *res, proc *process){
 	if((process->details[7] + res->cdDrive[0] + res->cdDrive[1])>2){
 		return 0;
 	}
+	if((process->addressIndex = alloc_mem(res, process->details[3]))==(-1)){
+		return 0;
+	}
 	for(int i=0; i<2; i++){
 		if(res->printer[i]!=1){
 			res->printer[i] = 1;
@@ -96,7 +99,12 @@ bool alloc_res(resources *res, proc *process){
 			if(i==0 && process->details[7]==1){
 				break;
 			}
-		}}
+		}
+	}
+for(int j=0;j<MEMORY;j++){
+   	printf("%d",res->memory[j]);
+}
+printf("\n");
 	return 1;
 }
 
@@ -150,6 +158,7 @@ proc load_dispatch(char *process_info)
    	// Need to change this, need to figure out the starting index.
    	// 0 used for now.
    	loadedProc.addressIndex = -1;
+   	loadedProc.waiting = 1;
 
 	return loadedProc;
 }
