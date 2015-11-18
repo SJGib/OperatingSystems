@@ -5,14 +5,12 @@
  * All rights reserved.
  * 
  */
-#include <stdio.h>
-#include <stdlib.h>
 #include "queue.h"
 
 // Define your FIFO queue functions here, these will most likely be the
 // push and pop functions that you declared in your header file
 
-void push(node_t **tail, proc process){
+void push(node_t **head, node_t **tail, proc process){
 	// creates new node_t to push onto the queue
 	node_t *new_node = (node_t *) malloc(sizeof(node_t));
 
@@ -27,14 +25,27 @@ void push(node_t **tail, proc process){
 	}
 	// assign tail to the new node
 	*tail = new_node;
+
+    // from empty queue to queue with only one element
+	if(*head==NULL){
+    	*head = *tail;
+    }
 }
 
 proc pop(node_t **head, node_t **tail){
-	// create a new pointer to the node being popped from the queue
-	proc process = (*head)->process;
+	// create a new pointer to the process being popped from the queue
+	proc process;
+	if(*head==NULL){
+		return process;
+	}
+	process = (*head)->process;
 
+	// create pointer to popped node
+	node_t *popped_node = *head;
 	// assign head to the new head of the queue
 	*head = (*head)->next;
+	// free memory
+	free(popped_node);
 
 	if(*head==NULL){
 		*tail = NULL;

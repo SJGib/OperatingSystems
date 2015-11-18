@@ -8,6 +8,8 @@
 #ifndef QUEUE_H_
 #define QUEUE_H_
 
+#include <stdio.h>
+#include <stdlib.h>
 #include "utility.h"
 
 // Your linked list structure for your queue
@@ -22,7 +24,7 @@ typedef struct node{
 // Add a new process to the queue, returns the address of the next node added
 // to the linked list
 
-extern void push(node_t **tail, proc process);
+extern void push(node_t **head, node_t **tail, proc process);
 
 extern proc pop(node_t **head, node_t **tail);
 
