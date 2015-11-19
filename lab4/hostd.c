@@ -60,7 +60,7 @@ int main(void)
 	    				pid_t pid = -1;
 	    				if(!process.waiting){
 	    					kill(process.pid, SIGCONT);
-	    					waitpid(pid,0,0);		
+	    					//waitpid(pid,0,0);		
 	    												// KNOWN ISSUES
 	    													//1. - waitpid(process.pid, 0, 0) doesn't work properly. Commenting out yields similar results.
 	    														// Believe the process.pid may be wrong? Might need parent pid or something.
@@ -72,6 +72,7 @@ int main(void)
 	    													//3. - At the very end, the parent process does not wait for the child process. Thus terminating
 	    														// before the child finishes and outputting weirdly to the console for the last process.
 	    														// There seems to be missing a waitpid(pid, 0, 0) somewhere or it was implemented wrong
+	    					//printf("%d\n", process.pid);
 	    					pid = process.pid;
 	    				} else {
 	    					process.waiting = 0;
@@ -93,7 +94,7 @@ int main(void)
 	    						process.details[2]--;
 	    						time++;
 	    						if(process.details[2]>0){
-		    						// Perform the appropriate `nal handling
+		    						// Perform the appropriate signal handling
 		    						kill(pid, SIGTSTP);
 		    					} else {
 		    						kill(pid, SIGINT);
@@ -127,7 +128,6 @@ int main(void)
 	    						process.details[2] = 0;
 	    						// Perform the appropriate signal handling
 	    						kill(pid, SIGINT);
-	    						waitpid(pid,0,0);
 	    					}
 	    				}
 	    				if(process.details[2]>0){
