@@ -104,6 +104,12 @@ bool alloc_res(resources *res, proc *process){
 			}
 		}
 	}
+
+	// for (int i = 0; i < MEMORY; i++) {
+	// 	printf("%d ", res->memory[i]);
+	// }
+	// printf("\n");
+
 	return 1;
 }
 
