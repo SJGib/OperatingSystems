@@ -60,7 +60,18 @@ int main(void)
 	    				pid_t pid = -1;
 	    				if(!process.waiting){
 	    					kill(process.pid, SIGCONT);
-	    					waitpid(process.pid,0,0);
+	    					waitpid(process.pid,0,0);		
+	    												// KNOWN ISSUES
+	    													//1. - waitpid(process.pid, 0, 0) doesn't work properly. Commenting out yields similar results.
+	    														// Believe the process.pid may be wrong? Might need parent pid or something.
+	    														// Right now the SIGCONT outputs aren't together and are mixed up with other signals
+	    													//2. - Priority 3 queue doesn't work properly, it executes til the end rather than popping
+	    														// and repushing onto priority 3. Needs to be fixed. Right now we get to a priority 3
+	    														// and execute it til it is done (Wrong). Should iterate through the remaining priority 3's 
+	    														// every 1 tick
+	    													//3. - At the very end, the parent process does not wait for the child process. Thus terminating
+	    														// before the child finishes and outputting weirdly to the console for the last process.
+	    														// There seems to be missing a waitpid(pid, 0, 0) somewhere or it was implemented wrong
 	    					pid = process.pid;
 	    				} else {
 	    					process.waiting = 0;
