@@ -60,7 +60,7 @@ int main(void)
 	    				pid_t pid = -1;
 	    				if(!process.waiting){
 	    					kill(process.pid, SIGCONT);
-	    					waitpid(process.pid,0,0);		
+	    					waitpid(pid,0,0);		
 	    												// KNOWN ISSUES
 	    													//1. - waitpid(process.pid, 0, 0) doesn't work properly. Commenting out yields similar results.
 	    														// Believe the process.pid may be wrong? Might need parent pid or something.
@@ -98,7 +98,7 @@ int main(void)
 		    					} else {
 		    						kill(pid, SIGINT);
 		    					}
-	    						waitpid(pid,0,0);
+	    						waitpid(process.pid,0,0);
 	    						// set process pid + res->has_x to pid+2
 	    						if(process.pid!=pid){
 	    							if(res->has_printer[0]==process.pid){
