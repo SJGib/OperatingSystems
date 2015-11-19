@@ -20,6 +20,7 @@ int time = 0;
 int main(void)
 {
 	resources *res = (resources *) calloc(1, sizeof(resources));
+	int status = 0;
     // dispatch queue head and tail
     node_t *dispatch_head = NULL;
     node_t *dispatch_tail = NULL;
@@ -60,7 +61,6 @@ int main(void)
 	    				pid_t pid = -1;
 	    				if(!process.waiting){
 	    					kill(process.pid, SIGCONT);
-	    					//printf("%d\n", process.pid);
 	    					pid = process.pid;
 	    				} else {
 	    					process.waiting = 0;
@@ -84,10 +84,11 @@ int main(void)
 	    						if(process.details[2]>0){
 		    						// Perform the appropriate signal handling
 		    						kill(pid, SIGTSTP);
+	    							waitpid(pid-2,&status,0);
 		    					} else {
 		    						kill(pid, SIGINT);
+	    							waitpid(pid-2,&status,0);
 		    					}
-	    						waitpid(pid,0,0);
 	    						// set process pid + res->has_x to pid+2
 	    						if(process.pid!=pid){
 	    							if(res->has_printer[0]==process.pid){
@@ -116,6 +117,7 @@ int main(void)
 	    						process.details[2] = 0;
 	    						// Perform the appropriate signal handling
 	    						kill(pid, SIGINT);
+	    						waitpid(pid-2, &status, 0);
 	    					}
 	    				}
 	    				if(process.details[2]>0){
