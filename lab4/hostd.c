@@ -21,6 +21,7 @@ int main(void)
 {
 	resources *res = (resources *) calloc(1, sizeof(resources));
 	int status = 0;
+	bool run = 0;
     // dispatch queue head and tail
     node_t *dispatch_head = NULL;
     node_t *dispatch_tail = NULL;
@@ -58,6 +59,7 @@ int main(void)
     			if(process.details[0]<=time){
 	    			// Allocate the resources for each process before it's executed
 	    			if(alloc_res(res, &process)){
+	    				run = 1;
 	    				pid_t pid = -1;
 						printf("\n");
 	    				if(!process.waiting){
@@ -144,6 +146,10 @@ int main(void)
 	    			if(res_taken_pid<0){
 	    				res_taken_pid = process.pid;
 	    			}
+	    		}
+	    		if(run){
+	    			run = 0;
+	    			priority = 0;
 	    		}
     		}
     		res_taken_pid = -1;
