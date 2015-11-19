@@ -59,6 +59,7 @@ int main(void)
 	    			// Allocate the resources for each process before it's executed
 	    			if(alloc_res(res, &process)){
 	    				pid_t pid = -1;
+						printf("\n");
 	    				if(!process.waiting){
 	    					kill(process.pid, SIGCONT);
 	    					pid = process.pid;
@@ -84,7 +85,7 @@ int main(void)
 	    						if(process.details[2]>0){
 		    						// Perform the appropriate signal handling
 		    						kill(pid, SIGTSTP);
-	    							waitpid(pid-2,&status,0);
+	    							sleep(1);
 		    					} else {
 		    						kill(pid, SIGINT);
 	    							waitpid(pid-2,&status,0);
