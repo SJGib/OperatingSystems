@@ -126,17 +126,17 @@ int main(int argc, char *argv[])
 
             // Based on the random number, call request or release
             if(funCall == 0){
-                request_res(cust, resources)
+                request_res(cust, resources);
             } 
             else if(funCall == 1){
-                release_res(cust, resources)
+                release_res(cust, resources);
             } 
-            else if(funcCall == 2){
-                request_res(int cust, resources)
-                release_res(int cust, resources)
+            else if(funCall == 2){
+                request_res(cust, resources);
+                release_res(cust, resources);
             } else{
-                release_res(int cust, resources)
-                request_res(int cust, resources)
+                release_res(cust, resources);
+                request_res(cust, resources);
             }
         }
     }
