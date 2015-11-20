@@ -65,9 +65,9 @@ bool release_res(int n_customer, int release[])
         }
     }
 
-    for (int j=0; j<NUM_RESOURCES; j++) {
-        available[j] = available[j] + allocation[n_customer][j];
-        allocation[n_customer][j] = 0;
+    for (int i=0; i<NUM_RESOURCES; i++) {
+        available[i] += release[i];
+        allocation[n_customer][i] -= release[i];
     }
 
     return 1;    
