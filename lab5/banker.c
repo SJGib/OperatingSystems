@@ -36,7 +36,7 @@ int need[NUM_CUSTOMERS][NUM_RESOURCES];
 
 
 // Define functions declared in banker.h here
-bool request_res(int n_customer, int request[]){
+bool request_res(int n_customer, int request[]) {
     // check each resource
     for(int i=0;i<NUM_RESOURCES;i++){
         // check if the request would be safe
@@ -61,17 +61,22 @@ bool request_res(int n_customer, int request[]){
 //Release resources, returns true if successful
 bool release_res(int n_customer, int release[])
 {
+    // Checks each resource.
     for (int i=0; i<NUM_RESOURCES; i++) {
+        // Checks if the release would be safe.
         if (release[i] > allocation[n_customer][i]) {
+            // Returns 0 if any of the releases would be unsafe.
             return 0;
         }
     }
 
     for (int i=0; i<NUM_RESOURCES; i++) {
+        // Releases the resources back to available resources.
         available[i] += release[i];
+        // Releases from allocation resources.
         allocation[n_customer][i] -= release[i];
     }
-
+    // Returns 1 if releasing the resources would be safe.
     return 1;    
 }    
 
