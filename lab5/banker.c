@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <omp.h>
 #include "banker.h"
 
 // Put any other macros or constants here using #define
@@ -61,7 +62,7 @@ int main(int argc, char *argv[])
     // Read in arguments from CLI, NUM_RESOURCES is the number of arguments
 
     // If the number of CLI arguments are the same as resources (subtract one since the ./banker counts as 1)
-    // Then the insert the CLI arguments into available
+    // Then insert the CLI arguments into available
     if((argc-1) == NUM_RESOURCES){
         // Start the for loop at 1 so that ./banker is not inserted
         for(int i = 1; i < argc; i++){
@@ -73,9 +74,15 @@ int main(int argc, char *argv[])
         }
     }
 
-    // Initialize the pthreads, locks, mutexes, etc.
+    #ifdef _OPENMP
+    // Initialize the openMP threads
+    omp_set_num_threads(NUM_CUSTOMERS);
 
     // Run the threads and continually loop
+
+
+
+    #endif
 
     // The threads will request and then release random numbers of resources
 
