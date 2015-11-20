@@ -17,7 +17,6 @@
 #define NUM_CUSTOMERS 5
 #define NUM_RESOURCES 3
 
-
 // Put global environment variables here
 // Available amount of each resource
 int available[NUM_RESOURCES];
@@ -31,22 +30,35 @@ int allocation[NUM_CUSTOMERS][NUM_RESOURCES];
 // Remaining need of each customer
 int need[NUM_CUSTOMERS][NUM_RESOURCES];
 
-
 // Define functions declared in banker.h here
-// bool request_res(int n_customer, int request[])
-// {
-//      ...
-// }
+bool request_res(int n_customer, int request[]){
+    // check each resource
+    for(int i=0;i<NUM_RESOURCES;i++){
+        // check if the request would be safe
+        if(request[i]<available[i] || 
+            (request[i]+allocation[n_customer][i])>maximum[n_customer][i] ||
+            need[n_customer][i]>available[i]){
+            // returns 0 if any of the values for requested resources would be unsafe
+            return 0;
+        }
+    }
+    for(int i=0; i<NUM_RESOURCES; i++){
+        // remove from available resources
+        available[i]-=request[i];
+        // allocate to customer
+        allocation[n_customer][i]+=request[i];
+        // remove from need
+        need[n_customer][i]-=request[i];
+    }
+    return 1;
+}
 
 // Release resources, returns true if successful
-// bool release_res(int n_customer, int release[])
-// {
-//      ...
-// }
+bool release_res(int n_customer, int release[]){
+    return 1;
+}
 
-
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
     // ==================== YOUR CODE HERE ==================== //
 
     // Read in arguments from CLI, NUM_RESOURCES is the number of arguments   
