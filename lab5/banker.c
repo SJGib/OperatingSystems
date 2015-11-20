@@ -42,7 +42,7 @@ int need[NUM_CUSTOMERS][NUM_RESOURCES];
 // bool release_res(int n_customer, int release[])
 // {
 //      ...
-// }
+// }    
 
 
 int main(int argc, char *argv[])
@@ -50,7 +50,12 @@ int main(int argc, char *argv[])
     // ==================== YOUR CODE HERE ==================== //
 
     // Read in arguments from CLI, NUM_RESOURCES is the number of arguments   
-    
+    if((argc-1) == NUM_RESOURCES){
+        for(int i = 1; i < (argc); i++){
+            available[i-1] = atoi(argv[i]);
+        }
+    }
+
     // Allocate the available resources
 
     // Initialize the pthreads, locks, mutexes, etc.
