@@ -100,7 +100,8 @@ int main(int argc, char *argv[])
 
     // Run the threads and continually loop
     int resources[3];
-    #pragma omp parallel{
+    #pragma omp parallel
+    {
         while(1){
             // Randomly select a customer from 0 to 4
             srand(time(NULL));
@@ -125,18 +126,21 @@ int main(int argc, char *argv[])
             int funCall = rand() % NUM_OPTIONS;
 
             // Based on the random number, call request or release
-            if(funCall == 0){
-                request_res(cust, resources);
-            } 
-            else if(funCall == 1){
-                release_res(cust, resources);
-            } 
-            else if(funCall == 2){
-                request_res(cust, resources);
-                release_res(cust, resources);
-            } else{
-                release_res(cust, resources);
-                request_res(cust, resources);
+            #pragma omp critical
+            {
+                if(funCall == 0){
+                    request_res(cust, resources);
+                } 
+                else if(funCall == 1){
+                    release_res(cust, resources);
+                } 
+                else if(funCall == 2){
+                    request_res(cust, resources);
+                    release_res(cust, resources);
+                } else{
+                    release_res(cust, resources);
+                    request_res(cust, resources);
+                }
             }
         }
     }

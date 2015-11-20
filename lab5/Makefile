@@ -1,5 +1,5 @@
-CC = clang
-CFLAGS = -Wall -Wextra -std=gnu99
+CC = gcc
+CFLAGS = -Wall -Wextra -std=gnu99 -fopenmp
 LFLAGS = 
 LIBS = -lpthread
 SOURCES = banker.c
