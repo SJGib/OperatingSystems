@@ -47,11 +47,15 @@ int need[NUM_CUSTOMERS][NUM_RESOURCES];
 
 int main(int argc, char *argv[])
 {
-    // ==================== YOUR CODE HERE ==================== //
+    // Read in arguments from CLI, NUM_RESOURCES is the number of arguments
 
-    // Read in arguments from CLI, NUM_RESOURCES is the number of arguments   
+    // If the number of CLI arguments are the same as resources (subtract one since the ./banker counts as 1)
+    // Then the insert the CLI arguments into available
     if((argc-1) == NUM_RESOURCES){
+        // Start the for loop at 1 so that ./banker is not inserted
         for(int i = 1; i < (argc); i++){
+            // Insert in i-1 so that the 0th element is filled and it doesn't exceed the NUM_RESOURCES
+            // atoi casts the string argument to an integer
             available[i-1] = atoi(argv[i]);
         }
     }
