@@ -11,13 +11,15 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include <omp.h>
+#include <time.h>
 #include "banker.h"
 
 // Put any other macros or constants here using #define
 // May be any values >= 0
 #define NUM_CUSTOMERS 5
 #define NUM_RESOURCES 3
-
+#define MAX_RESOURCES 100
+#define NUM_OPTIONS 4
 
 // Put global environment variables here
 // Available amount of each resource
@@ -66,13 +68,51 @@ int main(int argc, char *argv[])
     #ifdef _OPENMP
     // Initialize the openMP threads
     omp_set_num_threads(NUM_CUSTOMERS);
-
-    // Run the threads and continually loop
-
-
-
     #endif
 
+    // Run the threads and continually loop
+    int resources[3];
+    #pragma omp parallel{
+        while(1){
+            // Randomly select a customer from 0 to 4
+            srand(time(NULL));
+            int cust = rand() % NUM_CUSTOMERS;
+
+            // Randomly selected a resource from 0-100
+            srand(time(NULL));
+            int req1 = rand() % (MAX_RESOURCES+1);
+            // Randomly selected a resource from 0-100
+            srand(time(NULL));
+            int req2 = rand() % (MAX_RESOURCES+1);
+            // Randomly selected a resource from 0-100
+            srand(time(NULL));
+            int req3 = rand() % (MAX_RESOURCES+1);
+
+            resources[0] = req1;
+            resources[1] = req2;
+            resources[2] = req3;
+
+            // Randomly select if request, release or both(in which order) are called (0, 1, 2, 3)
+            srand(time(NULL));
+            int funCall = rand() % NUM_OPTIONS;
+
+            // Based on the random number, call request or release
+            if(funCall == 0){
+                request_res(cust, resources)
+            } 
+            else if(funCall == 1){
+                release_res(cust, resources)
+            } 
+            else if(funcCall == 2){
+                request_res(int cust, resources)
+                release_res(int cust, resources)
+            } else{
+                release_res(int cust, resources)
+                request_res(int cust, resources)
+            }
+        }
+    }
+    
     // The threads will request and then release random numbers of resources
 
     // If your program hangs you may have a deadlock, otherwise you *may* have
