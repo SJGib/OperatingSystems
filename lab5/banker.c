@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     // Then the insert the CLI arguments into available
     if((argc-1) == NUM_RESOURCES){
         // Start the for loop at 1 so that ./banker is not inserted
-        for(int i = 1; i < (argc); i++){
+        for(int i = 1; i < argc; i++){
             // Allocate the available resources
 
             // Insert in i-1 so that the 0th element is filled and it doesn't exceed the NUM_RESOURCES
