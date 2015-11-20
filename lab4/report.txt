@@ -1,0 +1,47 @@
+Report
+------
+
+Memory
+------
+
+Memory will only be allocated if there is enough space to contain the data continguously. Last 64 bytes are reserved for real time processes at all times (priority queues may not allocate to it). The space reserved the real  time queue is to make certain key processes are run as soon as possible. Free the memory when the allocated process dies.
+
+Data Structures
+---------------
+	
+	Queue Data Structure
+		- 4 queues will be used by the dispatcher. 1 is the real time queue (first come, first serve), and 3 queues for priority 1-3 queues. The dispatcher allocates memory and resources to the queue based on the priority of the process and if there is available memory. Priority 1-3 run for one second then move the process to lower priority queue. If it’s in the 3rd priority queue then re-add it to the third priority queue.
+
+	Process data structure that holds the information about the process.
+
+		- Arrival, Priority, Runtime, Memory Needed, Printers, Scanner, Modem, CD Drives
+
+	Resources data structure that holds the information about the overall resources of the system.
+
+		- 2 printers, 1 scanner, 1 modem, 2 CD drives, 1024MB memory. (initialized to res_available)
+
+Major Functions
+---------------
+
+void load(dispatch_head, dispatch_tail)
+	- Take the file and actually load it into memory, load it into an array of structs.
+
+proc load_process(char *details[])
+	- Loads details from character array into process
+
+int alloc_mem(int memsize, proc process)
+	- Allocate memory for process
+
+void free_mem(int start, int memsize)
+	- Deallocate memory for process
+
+bool alloc_res()
+	- Allocate resources for process
+
+void free_res(resource, process)
+	- Deallocate resources of process
+
+Multilevel Dispatching Scheme
+------------------------------
+
+Multiple queues allow for dealing with processes that need to be done in real time as well as differentiating processes that matter more to the system than others. This allows a system to execute what is needed immediately rather than executing on lesser needed processes/applications.
