@@ -96,6 +96,9 @@ int main(int argc, char *argv[])
             // atoi casts the string argument to an integer
             available[i-1] = atoi(argv[i]);
         }
+    } else {
+        printf("Invalid number of resource types.\n");
+        return 0;
     }
 
     #ifdef _OPENMP
