@@ -10,12 +10,14 @@
 #include <stdbool.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <omp.h>
 #include "banker.h"
 
 // Put any other macros or constants here using #define
 // May be any values >= 0
 #define NUM_CUSTOMERS 5
 #define NUM_RESOURCES 3
+
 
 // Put global environment variables here
 // Available amount of each resource
@@ -29,6 +31,7 @@ int allocation[NUM_CUSTOMERS][NUM_RESOURCES];
 
 // Remaining need of each customer
 int need[NUM_CUSTOMERS][NUM_RESOURCES];
+
 
 // Define functions declared in banker.h here
 bool request_res(int n_customer, int request[]){
@@ -53,21 +56,50 @@ bool request_res(int n_customer, int request[]){
     return 1;
 }
 
-// Release resources, returns true if successful
-bool release_res(int n_customer, int release[]){
-    return 1;
-}
+//Release resources, returns true if successful
+bool release_res(int n_customer, int release[])
+{
+    for (int i=0; i<NUM_RESOURCES; i++) {
+        if (release[i] > allocation[n_customer][i]) {
+            return 0;
+        }
+    }
 
-int main(int argc, char *argv[]){
-    // ==================== YOUR CODE HERE ==================== //
+    for (int j=0; j<NUM_RESOURCES; j++) {
+        available[j] = available[j] + allocation[n_customer][j];
+        allocation[n_customer][j] = 0;
+    }
 
-    // Read in arguments from CLI, NUM_RESOURCES is the number of arguments   
-    
-    // Allocate the available resources
+    return 1;    
+}    
 
-    // Initialize the pthreads, locks, mutexes, etc.
+
+int main(int argc, char *argv[])
+{
+    // Read in arguments from CLI, NUM_RESOURCES is the number of arguments
+
+    // If the number of CLI arguments are the same as resources (subtract one since the ./banker counts as 1)
+    // Then insert the CLI arguments into available
+    if((argc-1) == NUM_RESOURCES){
+        // Start the for loop at 1 so that ./banker is not inserted
+        for(int i = 1; i < argc; i++){
+            // Allocate the available resources
+
+            // Insert in i-1 so that the 0th element is filled and it doesn't exceed the NUM_RESOURCES
+            // atoi casts the string argument to an integer
+            available[i-1] = atoi(argv[i]);
+        }
+    }
+
+    #ifdef _OPENMP
+    // Initialize the openMP threads
+    omp_set_num_threads(NUM_CUSTOMERS);
 
     // Run the threads and continually loop
+
+
+
+    #endif
 
     // The threads will request and then release random numbers of resources
 
