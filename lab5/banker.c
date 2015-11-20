@@ -36,16 +36,44 @@ int need[NUM_CUSTOMERS][NUM_RESOURCES];
 
 
 // Define functions declared in banker.h here
-// bool request_res(int n_customer, int request[])
-// {
-//      ...
-// }
+bool request_res(int n_customer, int request[]){
+    // check each resource
+    for(int i=0;i<NUM_RESOURCES;i++){
+        // check if the request would be safe
+        if(request[i]<available[i] || 
+            (request[i]+allocation[n_customer][i])>maximum[n_customer][i] ||
+            need[n_customer][i]>available[i]){
+            // returns 0 if any of the values for requested resources would be unsafe
+            return 0;
+        }
+    }
+    for(int i=0; i<NUM_RESOURCES; i++){
+        // remove from available resources
+        available[i]-=request[i];
+        // allocate to customer
+        allocation[n_customer][i]+=request[i];
+        // remove from need
+        need[n_customer][i]-=request[i];
+    }
+    return 1;
+}
 
-// Release resources, returns true if successful
-// bool release_res(int n_customer, int release[])
-// {
-//      ...
-// }    
+//Release resources, returns true if successful
+bool release_res(int n_customer, int release[])
+{
+    for (int i=0; i<NUM_RESOURCES; i++) {
+        if (release[i] > allocation[n_customer][i]) {
+            return 0;
+        }
+    }
+
+    for (int i=0; i<NUM_RESOURCES; i++) {
+        available[i] += release[i];
+        allocation[n_customer][i] -= release[i];
+    }
+
+    return 1;    
+}    
 
 
 int main(int argc, char *argv[])
