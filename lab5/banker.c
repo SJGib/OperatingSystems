@@ -38,11 +38,22 @@ int need[NUM_CUSTOMERS][NUM_RESOURCES];
 //      ...
 // }
 
-// Release resources, returns true if successful
-// bool release_res(int n_customer, int release[])
-// {
-//      ...
-// }    
+//Release resources, returns true if successful
+bool release_res(int n_customer, int release[])
+{
+    for (int i=0; i<NUM_RESOURCES; i++) {
+        if (release[i] > allocation[n_customer][i]) {
+            return 0;
+        }
+    }
+
+    for (int j=0; j<NUM_RESOURCES; j++) {
+        available[j] = available[j] + allocation[n_customer][j];
+        allocation[n_customer][j] = 0;
+    }
+
+    return 1;    
+}    
 
 
 int main(int argc, char *argv[])
