@@ -18,15 +18,12 @@
 // May be any values >= 0
 #define NUM_CUSTOMERS 5
 #define NUM_RESOURCES 3
-#define MAX_RESOURCES 100
+#define MAX_RESOURCES 5
 #define NUM_OPTIONS 4
 
 // Put global environment variables here
 // Available amount of each resource
 int available[NUM_RESOURCES];
-
-// Maximum demand of each customer
-int maximum[NUM_CUSTOMERS][NUM_RESOURCES];
 
 // Amount currently allocated to each customer
 int allocation[NUM_CUSTOMERS][NUM_RESOURCES];
@@ -34,18 +31,34 @@ int allocation[NUM_CUSTOMERS][NUM_RESOURCES];
 // Remaining need of each customer
 int need[NUM_CUSTOMERS][NUM_RESOURCES];
 
+bool unavail[NUM_CUSTOMERS] = {false};
+
+// finished customers
+bool finish[NUM_CUSTOMERS] = {false};
+
+bool safe(int n_customer, int request[]){
+	for(int i=0; i<NUM_RESOURCES; i++){
+		if(need[n_customer][i]<request[i]){
+			return 0;
+		}
+		if(finish[n_customer] || need[n_customer][i]>available[i] ||
+			(request[i]+allocation[n_customer][i])>MAX_RESOURCES){
+			return 0;
+		}
+		if(request[i]>available[i]){
+			unavail[n_customer] = true;
+			return 0;
+		}
+		unavail[n_customer] = false;
+	}
+	return 1;
+}
 
 // Define functions declared in banker.h here
 bool request_res(int n_customer, int request[]) {
-    // check each resource
-    for(int i=0;i<NUM_RESOURCES;i++){
-        // check if the request would be safe
-        if(request[i]<available[i] || 
-            (request[i]+allocation[n_customer][i])>maximum[n_customer][i] ||
-            need[n_customer][i]>available[i]){
-            // returns 0 if any of the values for requested resources would be unsafe
-            return 0;
-        }
+    // check if the request would be safe
+    if(!safe(n_customer, request)){
+    	return 0;
     }
     for(int i=0; i<NUM_RESOURCES; i++){
         // remove from available resources
@@ -54,6 +67,10 @@ bool request_res(int n_customer, int request[]) {
         allocation[n_customer][i]+=request[i];
         // remove from need
         need[n_customer][i]-=request[i];
+    }
+    if(need[n_customer][0]<=0 && need[n_customer][1]<=0 &&
+    	need[n_customer][2]<=0){
+    	finish[n_customer]=true;
     }
     return 1;
 }
@@ -106,49 +123,72 @@ int main(int argc, char *argv[])
     omp_set_num_threads(NUM_CUSTOMERS);
     #endif
 
+    srand(time(NULL));
+
     // Run the threads and continually loop
     int resources[3];
     #pragma omp parallel
     {
+        // thread number of current thread is the customer number
+        int cust = omp_get_thread_num();
+        need[cust][0] = rand() % (MAX_RESOURCES);
+        need[cust][1] = rand() % (MAX_RESOURCES);
+        need[cust][2] = rand() % (MAX_RESOURCES);
+
         while(1){
-            // Randomly select a customer from 0 to 4
-            srand(time(NULL));
-            int cust = rand() % NUM_CUSTOMERS;
+            bool done = 1;
+            for(int j=0; j<NUM_RESOURCES; j++){
+                // check if it no longer needs any resources
+                if(need[cust][j]>0){
+                    done = 0;
+                }
+            }
+            if(done){
+                // ends loop of current customer
+                printf("All customers finished.\n");
+                break;
+            }
 
-            // Randomly selected a resource from 0-100
-            srand(time(NULL));
-            int req1 = rand() % (MAX_RESOURCES+1);
-            // Randomly selected a resource from 0-100
-            srand(time(NULL));
-            int req2 = rand() % (MAX_RESOURCES+1);
-            // Randomly selected a resource from 0-100
-            srand(time(NULL));
-            int req3 = rand() % (MAX_RESOURCES+1);
+            if(!unavail[cust]){
+	            // Randomly selected a resource from 0-100
+	            int req1 = rand() % (MAX_RESOURCES+1);
+	            // Randomly selected a resource from 0-100
+	            int req2 = rand() % (MAX_RESOURCES+1);
+	            // Randomly selected a resource from 0-100
+	            int req3 = rand() % (MAX_RESOURCES+1);
 
-            resources[0] = req1;
-            resources[1] = req2;
-            resources[2] = req3;
+	            resources[0] = req1;
+	            resources[1] = req2;
+	            resources[2] = req3;
+	        }
 
             // Randomly select if request, release or both(in which order) are called (0, 1, 2, 3)
-            srand(time(NULL));
             int funCall = rand() % NUM_OPTIONS;
 
             // Based on the random number, call request or release
             #pragma omp critical
             {
+             #ifdef _OPENMP
                 if(funCall == 0){
-                    request_res(cust, resources);
+                    printf("Request. Thread: %d, resource 1: %d, resource 2: %d, resource 3: %d, safe/accepted: %d\n", 
+                        cust, resources[0], resources[1], resources[2],request_res(cust, resources));
                 } 
                 else if(funCall == 1){
-                    release_res(cust, resources);
+                    printf("Release. Thread: %d, resource 1: %d, resource 2: %d, resource 3: %d, safe/accepted: %d\n", 
+                        cust, resources[0], resources[1], resources[2],release_res(cust, resources));
                 } 
                 else if(funCall == 2){
-                    request_res(cust, resources);
-                    release_res(cust, resources);
+                    printf("Request. Thread: %d, resource 1: %d, resource 2: %d, resource 3: %d, safe/accepted: %d\n", 
+                        cust, resources[0], resources[1], resources[2],request_res(cust, resources));
+                    printf("Release. Thread: %d, resource 1: %d, resource 2: %d, resource 3: %d, safe/accepted: %d\n", 
+                        cust, resources[0], resources[1], resources[2],release_res(cust, resources));
                 } else{
-                    release_res(cust, resources);
-                    request_res(cust, resources);
+                    printf("Release. Thread: %d, resource 1: %d, resource 2: %d, resource 3: %d, safe/accepted: %d\n", 
+                        cust, resources[0], resources[1], resources[2],release_res(cust, resources));
+                    printf("Request. Thread: %d, resource 1: %d, resource 2: %d, resource 3: %d, safe/accepted: %d\n", 
+                        cust, resources[0], resources[1], resources[2],request_res(cust, resources));
                 }
+             #endif
             }
         }
     }
