@@ -112,6 +112,10 @@ int main(int argc, char *argv[])
             // Insert in i-1 so that the 0th element is filled and it doesn't exceed the NUM_RESOURCES
             // atoi casts the string argument to an integer
             available[i-1] = atoi(argv[i]);
+            if(available[i-1]<MAX_RESOURCES){
+            	printf("Too few resources to complete tasks.\n");
+            	return 0;
+            }
         }
     } else {
         printf("Invalid number of resource types.\n");
