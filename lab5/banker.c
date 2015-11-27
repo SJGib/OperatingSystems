@@ -42,7 +42,7 @@ bool safe(int n_customer, int request[]){
 			return 0;
 		}
 		if(finish[n_customer] || need[n_customer][i]>available[i] ||
-			(request[i]+allocation[n_customer][i])>=MAX_RESOURCES){
+			(request[i]+allocation[n_customer][i])>MAX_RESOURCES){
 			return 0;
 		}
 		if(request[i]>available[i]){
@@ -68,6 +68,7 @@ bool request_res(int n_customer, int request[]) {
         // remove from need
         need[n_customer][i]-=request[i];
     }
+    //if(){}
     if(need[n_customer][0]<=0 && need[n_customer][1]<=0 &&
     	need[n_customer][2]<=0){
     	finish[n_customer]=true;
@@ -139,6 +140,8 @@ int main(int argc, char *argv[])
         need[cust][1] = rand() % (MAX_RESOURCES);
         need[cust][2] = rand() % (MAX_RESOURCES);
 
+        int funCall;
+
         while(1){
             bool done = 1;
             for(int j=0; j<NUM_RESOURCES; j++){
@@ -149,7 +152,9 @@ int main(int argc, char *argv[])
             }
             if(done){
                 // ends loop of current customer
-                printf("All customers finished.\n");
+                // free remaining resources
+                printf("Release. Thread: %d, resource 1: %d, resource 2: %d, resource 3: %d, safe/accepted: %d\n", 
+                        cust, allocation[cust][0], allocation[cust][1], allocation[cust][2],release_res(cust, allocation[cust]));
                 break;
             }
 
@@ -164,16 +169,16 @@ int main(int argc, char *argv[])
 	            resources[0] = req1;
 	            resources[1] = req2;
 	            resources[2] = req3;
-	        }
 
-            // Randomly select if request, release or both(in which order) are called (0, 1, 2, 3)
-            int funCall = rand() % NUM_OPTIONS;
+	            // Randomly select if request, release or both(in which order) are called (0, 1, 2, 3)
+    	        funCall = rand() % NUM_OPTIONS;
+	        }
 
             // Based on the random number, call request or release
             #pragma omp critical
             {
              #ifdef _OPENMP
-                if(funCall == 0){
+            	if(funCall == 0){
                     printf("Request. Thread: %d, resource 1: %d, resource 2: %d, resource 3: %d, safe/accepted: %d\n", 
                         cust, resources[0], resources[1], resources[2],request_res(cust, resources));
                 } 
