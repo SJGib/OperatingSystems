@@ -42,7 +42,7 @@ bool safe(int n_customer, int request[]){
 			return 0;
 		}
 		if(finish[n_customer] || need[n_customer][i]>available[i] ||
-			(request[i]+allocation[n_customer][i])>MAX_RESOURCES){
+			(request[i]+allocation[n_customer][i])>=MAX_RESOURCES){
 			return 0;
 		}
 		if(request[i]>available[i]){
