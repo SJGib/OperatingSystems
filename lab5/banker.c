@@ -68,7 +68,6 @@ bool request_res(int n_customer, int request[]) {
         // remove from need
         need[n_customer][i]-=request[i];
     }
-    //if(){}
     if(need[n_customer][0]<=0 && need[n_customer][1]<=0 &&
     	need[n_customer][2]<=0){
     	finish[n_customer]=true;
